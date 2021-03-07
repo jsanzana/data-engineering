@@ -1,0 +1,26 @@
+{
+	"name": "XX_ACCA_RTC_MKT_BI_DB",
+	"properties": {
+		"description": "BI INT database connection read only",
+		"linkedServiceName": {
+			"referenceName": "Oracle_Source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"in_extraction_date": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Marketing"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": ""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
