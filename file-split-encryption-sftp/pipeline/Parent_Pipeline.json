@@ -1,0 +1,194 @@
+{
+	"name": "Parent_Pipeline",
+	"properties": {
+		"description": "Parent pipeline to trigger all child pipelines based on extract completion status",
+		"activities": [
+			{
+				"name": "CheckExtractCompletionStatus",
+				"description": "Checks the extraction completion status ",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@and(equals(formatDateTime(utcnow(),'dd-MM-yyyy'),activity('ExtractCompletionStatus').output.firstRow.END_DATE),equals(activity('ExtractCompletionStatus').output.firstRow.STATUS,'C'))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "ExtractCompletionStatus",
+							"description": "Get completion status source table",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OracleSource",
+									"oracleReaderQuery": "Select To_Char(End_Date,'dd-mm-yyyy') END_DATE, STATUS From source_control;",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "XX_ACCA_RTC_MKT_BI_DB",
+									"type": "DatasetReference",
+									"parameters": {
+										"in_extraction_date": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "CheckExtractCompletionValue",
+							"description": "Check the end date and status from extract_log table",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "ExtractCompletionStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(equals(formatDateTime(utcnow(),'dd-MM-yyyy'),activity('ExtractCompletionStatus').output.firstRow.END_DATE),equals(activity('ExtractCompletionStatus').output.firstRow.STATUS,'C'))",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "WaitInterval",
+										"description": "Wait interval of 30 minutes until next retry to check end date and status from source_control table.",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 900
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "0.00:00:00"
+				}
+			},
+			{
+				"name": "ExecuteChildPipeline1",
+				"description": "ExecuteChildPipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CheckExtractCompletionStatus",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Child_Pipeline2",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "e-mail on success for child pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteChildPipeline1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "EMail_Notification",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Subject": {
+							"value": "@concat('Child_Pipeline1 completed successfully in ',variables('v_environment_name'))",
+							"type": "Expression"
+						},
+						"Message": "ChildPipeline1 has completed successfully.",
+						"EmailTo": {
+							"value": "@variables('v_email_address')",
+							"type": "Expression"
+						},
+						"MailImportance": "Normal",
+						"Pipeline": "Child_Pipeline1"
+					}
+				}
+			},
+			{
+				"name": "e-mail on failure for child pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteChildPipeline1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "EMail_Notification",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Subject": {
+							"value": "@concat('Child_Pipeline1 failed in ',variables('v_environment_name'))",
+							"type": "Expression"
+						},
+						"Message": {
+							"value": "@concat('Child_Pipeline1 failed!. Check the monitor for error logs.','Error Message: ',activity('ExecuteChildPipeline1').Error.Message)",
+							"type": "Expression"
+						},
+						"EmailTo": {
+							"value": "@variables('v_email_address')",
+							"type": "Expression"
+						},
+						"MailImportance": "High",
+						"Pipeline": "Child_Pipeline1"
+					}
+				}
+			}
+		],
+		"concurrency": 1,
+		"variables": {
+			"v_environment_name": {
+				"type": "String",
+				"defaultValue": "@pipeline().globalParameters.ENVIRONMENT"
+			},
+			"v_email_address": {
+				"type": "String",
+				"defaultValue": "parameswaran.narayanan@accaglobal.com; Lekan.Omodara@accaglobal.com"
+			}
+		},
+		"folder": {
+			"name": "Marketing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T20:59:07Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
