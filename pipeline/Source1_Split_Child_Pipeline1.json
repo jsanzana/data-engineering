@@ -1,0 +1,1234 @@
+{
+	"name": "Source1_Split_Child_Pipeline1",
+	"properties": {
+		"description": "Encryption pipeline for PROD related tables",
+		"activities": [
+			{
+				"name": "GetbatchnumberforProdClients",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENTS;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdClients",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdClients",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.CLIENT_ID) AS MIN_NUMBER, MAX(P.CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLIENT_ID, ntile(',activity('GetbatchnumberforProdClients').output.firstRow.batch_number,')over (ORDER BY CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENTS) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdClients",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdClients",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodclients_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdClients').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdClients",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdClients",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodclients_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdClientsFile",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.TEMP_PROD_CLIENTS P Where CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_CLIENTS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "GetbatchnumberforProdRegisteredPersons",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1)  batch_number FROM Staging.TEMP_PROD_REGISTERED_PERSONS;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdRegisteredPersons",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdRegisteredPersons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdRegisteredPersons').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_REGISTERED_PERSONS) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdRegisteredPersons",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdRegisteredPersons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodregisteredpersons_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdRegisteredPersons').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdRegisteredPerosns",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdRegisteredPersons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodregisteredpersons_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdRegisteredPersons",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.TEMP_PROD_REGISTERED_PERSONS P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_REGISTERED_PERSONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "GetbatchnumberforProdClientAddresses",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENT_ADDRESSES;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdClientAddresses",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdClientAddresses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdClientAddresses').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENT_ADDRESSES) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdClientAddresses",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdClientAddresses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodclientaddresses_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdClientAddresses').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdClientAddresses",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdClientAddresses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodclientaddresses_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdClientAddresses",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.TEMP_PROD_CLIENT_ADDRESSES P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_CLIENT_ADDRESSES-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "GetbatchnumberforProdClientClassifications",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS;')\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdClientClassifications",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdClientClassifications",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdClientClassifications').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdClientClassifications",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdClientClassifications",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodclientclassifications_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdClientClassifications').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdClientClassifications",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdClientClassifications",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodclientclassifications_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdClientClassifications",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_CLIENT_CLASSIFICATIONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "GetbatchnumberforProdReinstatementReasons",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.STG_PROD_Reinstatement_Reasons;')\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdReinstatementReasons",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdReinstatementReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.REINSTATEMENT_REASON) AS MIN_NUMBER, MAX(P.REINSTATEMENT_REASON) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT REINSTATEMENT_REASON, ntile(',activity('GetbatchnumberforProdReinstatementReasons').output.firstRow.batch_number,')over (ORDER BY REINSTATEMENT_REASON ASC) AS NUM \nFROM Staging.stg_PROD_REINSTATEMENT_REASONs) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdReinstatementReasons",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdReinstatementReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodreinstatementreasons_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdReinstatementReasons').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdReinstatementReasons",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdReinstatementReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodreinstatementreasons_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdReinstatementReasons",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.STG_PROD_Reinstatement_Reasons P Where Reinstatement_Reason BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_REINSTATEMENT_REASONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "GetbatchnumberforProdSuspensionReasons",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.stg_PROD_Suspension_Reasons;')\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetbatchsizeforProdSuspensionReasons",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetbatchnumberforProdSuspensionReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MIN(P.Suspension_Reason) AS MIN_NUMBER, MAX(P.Suspension_Reason) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT Suspension_Reason, ntile(',activity('GetbatchnumberforProdSuspensionReasons').output.firstRow.batch_number,')over (ORDER BY Suspension_Reason ASC) AS NUM \nFROM Staging.stg_PROD_Suspension_Reasons) P GROUP BY NUM ORDER BY NUM;')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "SetbatchsizeforProdSuspensionReasons",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetbatchsizeforProdSuspensionReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_prodsuspensionreasons_batch_size",
+					"value": {
+						"value": "@activity('GetbatchsizeforProdSuspensionReasons').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachProdSuspensionReasons",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SetbatchsizeforProdSuspensionReasons",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_prodsuspensionreasons_batch_size')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ExtractProdSuspensionReasons",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * From Staging.stg_PROD_Suspension_Reasons P Where Suspension_Reason BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SQL_Datawarehouse_Target",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@empty('')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Data_Lake_Landing_Zone",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@pipeline().parameters.folder_name",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat('PROD_SUSPENSION_REASONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+											"type": "Expression"
+										},
+										"file_system": "eds-landing-zone"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"concurrency": 1,
+		"parameters": {
+			"no_of_records_per_file": {
+				"type": "int"
+			},
+			"data_lake_storage_account": {
+				"type": "string"
+			},
+			"folder_name": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_prodclients_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			},
+			"v_prodregisteredpersons_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			},
+			"v_prodclientaddresses_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			},
+			"v_prodclientclassifications_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			},
+			"v_prodreinstatementreasons_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			},
+			"v_prodsuspensionreasons_batch_size": {
+				"type": "Array",
+				"defaultValue": [
+					"0"
+				]
+			}
+		},
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation/File Encryption"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,62 @@
+{
+	"name": "Fact_Prep_Pipeline",
+	"properties": {
+		"description": "Pipeline to prepare and populated data to Dimensions and Facts tables",
+		"activities": [
+			{
+				"name": "RefreshFact2Data",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "RefreshFact1Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[FACT2_SCD]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "RefreshFact1Data",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[FACT1_SCD]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"concurrency": 1,
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption/Dimensions and Facts"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

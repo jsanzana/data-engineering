@@ -1,0 +1,16 @@
+{
+	"name": "Oracle1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Oracle",
+		"typeProperties": {
+			"connectionString": "host=10.6.4.78;port=1521;sid=finlive;user id=apps",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0NGQ1M2Y2MC03MDYzLTRhM2UtYWY4ZC1mZmYyOTNkYzZhYWMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "self-hosted",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

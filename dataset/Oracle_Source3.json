@@ -1,0 +1,26 @@
+{
+	"name": "Oracle_Source3",
+	"properties": {
+		"description": "FINLIVE OAT database connection read only",
+		"linkedServiceName": {
+			"referenceName": "Oracle_Source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"in_extraction_date": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Analytical Reporting Datasets"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": ""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

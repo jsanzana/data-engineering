@@ -1,0 +1,306 @@
+{
+	"name": "Parent_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetEnvironmentName",
+				"description": "Get the environment details",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"oracleReaderQuery": "Select UPPER(VALUE) DB_INSTANCE From Xx_Env.Xx_Environment_Variables\nWhere ENVIRONMENT_VARIABLE = 'ENVIRONMENT';",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "Oracle_Source3",
+						"type": "DatasetReference",
+						"parameters": {
+							"in_extraction_date": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "GetConversionFlag",
+				"description": "Get conversion flag details from SQL DW.",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "GetEnvironmentName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select\n\tFACTOR_VALUE\nfrom\nstaging.LOAD_CONTROL\nWHERE\n\tcontrol_factor = 'DATA_CONVERSION';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "CheckConversionFlag",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetConversionFlag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('GetConversionFlag').output.firstRow.FACTOR_VALUE,'N')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "ExecuteConversionPipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "SetErrorFolderforConversion",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Stage_Data_Prep_Parent_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						},
+						{
+							"name": "SetErrorFolderforConversion",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "error_folder_name",
+								"value": {
+									"value": "@if(empty(pipeline().parameters.Extract_Year),concat('B2C/Master/',formatDateTime(utcnow(),'yyyy'),'/Error'),concat('B2C/Master/',pipeline().parameters.Extract_Year,'/Error'))",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "ExecuteDailyDataPipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "SetErrorFolderforDailyData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Daily_Data_Load_Parent_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Extract_Year": {
+										"value": "@pipeline().parameters.Extract_Year",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "SetErrorFolderforDailyData",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "error_folder_name",
+								"value": {
+									"value": "@concat('B2C/Master/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Error')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ExecuteReferenceDataPipeline",
+				"description": "Execute pipeline to pull and load reference data files from SharePoint To SQL DW",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CheckConversionFlag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Reference_Files_Load_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"data_lake_storage_account": {
+							"value": "@pipeline().globalParameters.Data_Lake_Storage_Account",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "ExecuteStagePrepPipeline",
+				"description": "Prepare gold copy data/stage data preparation.",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteReferenceDataPipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Stage_Data_Prep_Parent_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ExecuteDimRefresh",
+				"description": "Refresh Dimensions and Fact IR table",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteStagePrepPipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Dimensions_Prep_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ExecuteAnalysisServicesRefresh",
+				"description": "Refresh Azure Analysis Service",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteFactRefresh",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Azure_Analysis_Service_Refresh_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ExecuteFactRefresh",
+				"description": "Refresh Dimensions and Fact IR table",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteDimRefresh",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Fact_Prep_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"concurrency": 1,
+		"parameters": {
+			"Extract_Year": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"error_folder_name": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

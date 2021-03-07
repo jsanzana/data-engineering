@@ -1,0 +1,12 @@
+{
+	"name": "TESTSANDYADF01",
+	"properties": {
+		"globalParameters": {
+			"Data_Lake_Storage_Account": {
+				"type": "string",
+				"value": "Data_Lake_Storage_Account"
+			}
+		}
+	},
+	"location": "uksouth"
+}
