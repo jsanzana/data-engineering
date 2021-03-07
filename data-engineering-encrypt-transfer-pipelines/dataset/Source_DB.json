@@ -1,0 +1,26 @@
+{
+	"name": "Source_DB",
+	"properties": {
+		"description": "Source database connection",
+		"linkedServiceName": {
+			"referenceName": "Oracle_Source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"in_extraction_date": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Marketing"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": ""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

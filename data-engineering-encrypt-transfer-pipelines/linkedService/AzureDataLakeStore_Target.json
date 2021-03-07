@@ -1,0 +1,14 @@
+{
+	"name": "AzureDataLakeStore_Target",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "AzureDataLakeStore_Target",
+			"tenant": "91693d3b-e21b-4270-acf2-6fdf065d9040",
+			"subscriptionId": "AzureDataLakeStore_Target",
+			"resourceGroupName": "AzureDataLakeStore_Target"
+		}
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"name": "EMail_Notification",
+	"properties": {
+		"description": "Trigger e-mail notification for each individual activity.",
+		"activities": [
+			{
+				"name": "e-mail notification for individual activity",
+				"description": "e-mail notification for individual activity",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "EMAIL LOGIC APP URL",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"body": {
+						"DataFactoryName": "@{pipeline().DataFactory}",
+						"PipelineName": "@{pipeline().parameters.Pipeline}",
+						"Subject": "@{pipeline().parameters.Subject}",
+						"Message": "@{pipeline().parameters.Message}",
+						"EmailTo": "@{pipeline().parameters.EmailTo}",
+						"MailImportance": "@{pipeline().parameters.MailImportance}"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Subject": {
+				"type": "string",
+				"defaultValue": "Subject parameter not set!"
+			},
+			"Message": {
+				"type": "string",
+				"defaultValue": "Message parameter not set!"
+			},
+			"EmailTo": {
+				"type": "string",
+				"defaultValue": "EmailTo parameter not set!"
+			},
+			"MailImportance": {
+				"type": "string",
+				"defaultValue": "MailImportance parameter not set!"
+			},
+			"Pipeline": {
+				"type": "string",
+				"defaultValue": "Pipeline parameter not set!"
+			}
+		},
+		"folder": {
+			"name": "E-mail Notification"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T20:59:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
