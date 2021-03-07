@@ -1,0 +1,87 @@
+{
+	"name": "Source1_Stage_Data_Prep_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "UpsertProc1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[UPSERT1_DATA]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "UpsertProc2",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "UpsertProc1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[UPSERT2_DATA]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "UpsertProc3",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "UpsertProc2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[UPSERT3_DATA]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

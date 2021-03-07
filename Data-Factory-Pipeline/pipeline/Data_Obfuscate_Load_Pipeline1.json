@@ -1,0 +1,452 @@
+{
+	"name": "Data_Obfuscate_Load_Pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ExtractSource1",
+				"description": "",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "WaterMarkSource1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"oracleReaderQuery": {
+							"value": "@concat('SELECT\nx,y,z\nFROM source1.table1;')",
+							"type": "Expression"
+						},
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ""
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Oracle_Source1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Data_Lake_Landing_Zone",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_name": {
+								"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@concat('SUSPENSION_REASONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+								"type": "Expression"
+							},
+							"file_system": "eds-landing-zone"
+						}
+					}
+				]
+			},
+			{
+				"name": "LoadSource1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "ExtractSource1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE Staging.SOURCE1_TABLE;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Data_Lake_Landing_Zone",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_name": {
+								"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@concat('Source1-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+								"type": "Expression"
+							},
+							"file_system": "landing-zone"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": "Staging",
+							"table_name": "SOURCE1_TABLE"
+						}
+					}
+				]
+			},
+			{
+				"name": "CurrentTimeSource1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "Oracle_Source1",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "DataWaterMarkSource1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "CurrentTimeSource1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[LOG_DATA_LOAD]",
+					"storedProcedureParameters": {
+						"DML": {
+							"value": "I",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_HIGH": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_END_DATE": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_START_DATE": {
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_RUN_ID": {
+							"value": {
+								"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PROCESS_STATUS": {
+							"value": "P",
+							"type": "String"
+						},
+						"SOURCE_SYSTEM": {
+							"value": "XXX",
+							"type": "String"
+						},
+						"SOURCE_TABLE": {
+							"value": "DEF",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_LOW": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "WaterMarkSource1",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "DataWaterMarkSource1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'XXX'\nAND SOURCE_TABLE = 'DEF';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "UpdateDataWaterMarkSource1OnSuccess",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ExtractSource1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[LOG_DATA_LOAD]",
+					"storedProcedureParameters": {
+						"DML": {
+							"value": "U",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_HIGH": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_END_DATE": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_START_DATE": {
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_RUN_ID": {
+							"value": {
+								"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PROCESS_STATUS": {
+							"value": "S",
+							"type": "String"
+						},
+						"SOURCE_SYSTEM": {
+							"value": "XXX",
+							"type": "String"
+						},
+						"SOURCE_TABLE": {
+							"value": "DEF",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_LOW": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "UpdateDataWaterMarkSource1OnFailure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ExtractSource1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[staging].[LOG_DATA_LOAD]",
+					"storedProcedureParameters": {
+						"DML": {
+							"value": "U",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_HIGH": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_END_DATE": {
+							"value": null,
+							"type": "String"
+						},
+						"EXTRACT_START_DATE": {
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_RUN_ID": {
+							"value": {
+								"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PROCESS_STATUS": {
+							"value": "E",
+							"type": "String"
+						},
+						"SOURCE_SYSTEM": {
+							"value": "XXX",
+							"type": "String"
+						},
+						"SOURCE_TABLE": {
+							"value": "DEF",
+							"type": "String"
+						},
+						"DATA_EXTRACT_WATERMARK_LOW": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"concurrency": 1,
+		"parameters": {
+			"Extract_Year": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_folder_name": {
+				"type": "String"
+			},
+			"v_parent_folder": {
+				"type": "String",
+				"defaultValue": "B2C/Master/"
+			},
+			"v_set_file_date_field": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation/Daily Data Interface"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

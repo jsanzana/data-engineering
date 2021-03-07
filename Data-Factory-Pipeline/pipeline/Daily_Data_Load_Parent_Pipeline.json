@@ -1,0 +1,138 @@
+{
+	"name": "Daily_Data_Load_Parent_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "CheckforDataObfuscation",
+				"description": "",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetObfuscationFlag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('GetObfuscationFlag').output.firstRow.FACTOR_VALUE,'N')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "ExecuteSource1ObfuscateDailyDataLoadPipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Daily_Obfuscate_Load_Parent_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "ExecuteSource1DailyDataLoadPipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Daily_Obfuscate_Load_Parent_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetObfuscationFlag",
+				"description": "Get obfuscation flag details from SQL DW.",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select\n\tFACTOR_VALUE\nfrom\nstaging.CONTROL_LOAD\nWHERE\n\tcontrol_factor = 'OBFUSCATION_NEEDED';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_Datawarehouse_Target",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							},
+							"table_name": {
+								"value": "@empty('')",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "ExecuteSource1EncryptPipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CheckforDataObfuscation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Encrypt_Source1_Parent_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"no_of_records_per_file": "10000",
+						"data_lake_storage_account": {
+							"value": "@pipeline().globalParameters.Data_Lake_Storage_Account",
+							"type": "Expression"
+						},
+						"folder_name": {
+							"value": "@concat('B2C/Master/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Processed')",
+							"type": "Expression"
+						},
+						"extract_type": "Delta"
+					}
+				}
+			}
+		],
+		"concurrency": 1,
+		"parameters": {
+			"Extract_Year": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation/Daily Data Interface"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-03-07T09:23:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
