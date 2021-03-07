@@ -18,7 +18,7 @@
 			}
 		],
 		"folder": {
-			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation/Daily Data Interface"
+			"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/Daily Data Interface"
 		},
 		"annotations": [],
 		"lastPublishTime": "2021-03-07T09:23:26Z"

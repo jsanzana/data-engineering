@@ -18,7 +18,7 @@
 		],
 		"concurrency": 1,
 		"folder": {
-			"name": "Analytical Datawarehouse Model with File Encryption/Staging Data Preparation"
+			"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines"
 		},
 		"annotations": [],
 		"lastPublishTime": "2021-03-07T09:23:25Z"
