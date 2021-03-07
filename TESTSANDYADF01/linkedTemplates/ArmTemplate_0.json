@@ -1,0 +1,5027 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "TESTSANDYADF01"
+		},
+		"Data_Lake_Store_Middleware_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Data_Lake_Store_Middleware'"
+		},
+		"Oracle_Source_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Oracle_Source'"
+		},
+		"SQL_DataWarehouse_Target_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SQL_DataWarehouse_Target'"
+		},
+		"Oracle1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Oracle1'"
+		},
+		"Data_Lake_Store_Middleware_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "testdatalake"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_Analysis_Service_Refresh_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "RefreshAzureAnalysisServiceModels",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "'Endpoint URL for Analysis Services'",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Dimensions and Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:26Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Data_Lake_Store_Middleware')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('Data_Lake_Store_Middleware_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('Data_Lake_Store_Middleware_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle_Source')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Oracle",
+				"typeProperties": {
+					"connectionString": "[parameters('Oracle_Source_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQL_DataWarehouse_Target')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('SQL_DataWarehouse_Target_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/self-hosted')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dimensions_Prep_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Pipeline to prepare and populated data to Dimensions and Facts tables",
+				"activities": [
+					{
+						"name": "RefreshDim1SCD",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[DIM1_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "RefreshDim2SCD",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RefreshDim1SCD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[DIM2_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "RefreshDim3SCD",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RefreshDim2SCD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[DIM3_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "RefreshDim4SCD",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RefreshDim3SCD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[DIM4_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "RefreshDim5SCD",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RefreshDim4SCD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[DIM5_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Dimensions and Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Fact_Prep_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Pipeline to prepare and populated data to Dimensions and Facts tables",
+				"activities": [
+					{
+						"name": "RefreshFact2Data",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "RefreshFact1Data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[FACT2_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "RefreshFact1Data",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[FACT1_SCD]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Dimensions and Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:26Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Source1_Stage_Data_Prep_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "UpsertProc1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[UPSERT1_DATA]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpsertProc2",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "UpsertProc1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[UPSERT2_DATA]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpsertProc3",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "UpsertProc2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[UPSERT3_DATA]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Data_Lake_Landing_Zone')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Save extract files to landing zone for processing the files into SQL Data Warehouse.",
+				"linkedServiceName": {
+					"referenceName": "Data_Lake_Store_Middleware",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder_name": {
+						"type": "string"
+					},
+					"file_name": {
+						"type": "string"
+					},
+					"file_system": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Analytical Reporting Datasets"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().file_system",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\u0001",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data_Lake_Store_Middleware')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle_Source1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Oracle_Source",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Analytical Reporting Datasets"
+				},
+				"annotations": [],
+				"type": "OracleTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Oracle_Source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle_Source2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Oracle_Source",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Analytical Reporting Datasets"
+				},
+				"annotations": [],
+				"type": "OracleTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Oracle_Source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle_Source3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "FINLIVE OAT database connection read only",
+				"linkedServiceName": {
+					"referenceName": "Oracle_Source",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"in_extraction_date": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Analytical Reporting Datasets"
+				},
+				"annotations": [],
+				"type": "OracleTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": ""
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Oracle_Source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQL_Datawarehouse_Target')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SQL_DataWarehouse_Target",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"schema_name": {
+						"type": "string"
+					},
+					"table_name": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Analytical Reporting Datasets"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema_name",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().table_name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Oracle",
+				"typeProperties": {
+					"connectionString": "[parameters('Oracle1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "self-hosted",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Daily_Data_Obfuscate_Load_Pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExtractClientsData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "."
+							},
+							{
+								"name": "Destination",
+								"value": "@{'eds-landing-zone'}/@{concat(variables('v_folder_name'),'/Input')}/@{concat('CLIENTS_',variables('v_set_file_date_field'),'.csv')}"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT \nREGISTRY.ENCRYPTION.ENCRYPT(CLIENT_ID) CLIENT_ID,\nc.CLT_TYPE,\nYN_HEALTH_WARNING,\nTO_CHAR(LAST_VALID_ADDRESS_DATE,''DD-MON-YYYY HH24:MI:SS'') LAST_VALID_ADDRESS_DATE,\nYN_VALID_ADDRESS,\nREGISTRY.ENCRYPTION.ENCRYPT(NAME) NAME,\nREGISTRY.ENCRYPTION.ENCRYPT(UPPERCASE_NAME) UPPERCASE_NAME,\nc.MODIFIED_BY,\nTO_CHAR(c.MODIFIED_DATE,''DD-MON-YYYY HH24:MI:SS'') MODIFIED_DATE,\nYN_VALIDATED_BY_GBMAIL,\nTOWN,\nCOUNTY,\nCOU_ADDRESS_COUNTRY,\nCOU_NATIONALITY_COUNTRY,\nREGISTRY.ENCRYPTION.ENCRYPT(MAIL_ADDRESS1) MAIL_ADDRESS1,\nREGISTRY.ENCRYPTION.ENCRYPT(MAIL_ADDRESS2) MAIL_ADDRESS2,\nREGISTRY.ENCRYPTION.ENCRYPT(MAIL_ADDRESS3) MAIL_ADDRESS3,\nREGISTRY.ENCRYPTION.ENCRYPT(POSTCODE) POSTCODE,\nREPLACE(TELEPHONE_NUMBER,TELEPHONE_NUMBER, ''07777777777'') TELEPHONE_NUMBER,\nREPLACE(FAX_NUMBER,FAX_NUMBER, ''07777777777'') FAX_NUMBER,\nREGISTRY.ENCRYPTION.ENCRYPT(SORTCODE) SORTCODE,\nTO_CHAR(ADDRESS_CHANGE_DATE,''DD-MON-YYYY HH24:MI:SS'') ADDRESS_CHANGE_DATE,\nACCOUNT_BALANCE,\nWRITE_OFF_VALUE,\nREGISTRY.ENCRYPTION.ENCRYPT(BANK_ACCOUNT_NAME) BANK_ACCOUNT_NAME,\nBANK_NAME,\nREGISTRY.ENCRYPTION.ENCRYPT(BANK_SORT_CODE) BANK_SORT_CODE,\nREGISTRY.ENCRYPTION.ENCRYPT(BANK_ACCOUNT_NUMBER) BANK_ACCOUNT_NUMBER,\nTTL_TITLE,\nADVANCE_BALANCE,\nREGISTRY.ENCRYPTION.ENCRYPT(COMPANY_NAME) COMPANY_NAME,\nTELEX_NUMBER,\nCONTACT_NAME,\nYN_FINANCIAL_PROCESSING,\nFIN_COMPANY,\nFIN_BUS_UNIT,\nREGISTRY.ENCRYPTION.ENCRYPT(FIN_ACC_CODE) FIN_ACC_CODE,\nREGISTRY.ENCRYPTION.ENCRYPT(FIN_SUB_ACC_CODE) FIN_SUB_ACC_CODE,\nFIN_VENDOR,\nYN_USE_ALT_ADDRESS,\nYN_ALT_VALID_ADDRESS,\nYN_ALT_VALID_BY_GBMAIL,\nALT_COMPANY_NAME,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_MAIL_ADDRESS1) ALT_MAIL_ADDRESS1,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_MAIL_ADDRESS2) ALT_MAIL_ADDRESS2,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_MAIL_ADDRESS3) ALT_MAIL_ADDRESS3,\nALT_TOWN,\nALT_COUNTY,\nALT_COU_ADDRESS_COUNTRY,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_POSTCODE) ALT_POSTCODE,\nREPLACE(ALT_TELEPHONE_NUMBER,ALT_TELEPHONE_NUMBER, ''07777777777'') ALT_TELEPHONE_NUMBER,\nREPLACE(ALT_FAX_NUMBER,ALT_FAX_NUMBER, ''07777777777'') ALT_FAX_NUMBER,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_SORTCODE) ALT_SORTCODE,\nREGISTRY.ENCRYPTION.ENCRYPT(SURNAME) SURNAME,\nREGISTRY.ENCRYPTION.ENCRYPT(FIRST_NAME) FIRST_NAME,\nJOB_TITLE,\nALT_JOB_TITLE,\nLWC_LEGAL_CODE,\nYN_BENEVOLENT_DONATION,\nYN_USE_ALT_ADD_FOR_DOM,\nYN_REC_THIRD_PARTY_MAIL,\nYN_MAIL_FOR_EVENTS,\nYN_DIVULGE_INFO,\nHONOURS,\nREGISTRY.ENCRYPTION.ENCRYPT(EMAIL_ADDRESS) EMAIL_ADDRESS,\nREGISTRY.ENCRYPTION.ENCRYPT(ALT_EMAIL_ADDRESS) ALT_EMAIL_ADDRESS,\nALT_TELEX_NUMBER,\nTO_CHAR(ALT_ADDRESS_CHANGE_DATE,''DD-MON-YYYY HH24:MI:SS'') ALT_ADDRESS_CHANGE_DATE,\nEEC_VAT_NO,\nPOST_REGION,\nALT_POST_REGION,\nADDRESS_CHANGED_BY,\nALT_ADDRESS_CHANGED_BY,\nTO_CHAR(ALT_LAST_VALID_ADDRESS_DATE,''DD-MON-YYYY HH24:MI:SS'') ALT_LAST_VALID_ADDRESS_DATE,\nYN_ALT_RESIDENTIAL_ADDRESS,\nYN_RESIDENTIAL_ADDRESS,\nCOM_ALT_PRACTICE_ADDRESS_ID,\nCOM_PRACTICE_ADDRESS_ID,\nTO_CHAR(AOCT_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') AOCT_PASS_DATE,\nDAC_DIB_CODE,\nTO_CHAR(FPC_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') FPC_PASS_DATE,\nTO_CHAR(IBOC_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') IBOC_PASS_DATE,\nTO_CHAR(JIEB_EXAM_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') JIEB_EXAM_PASS_DATE,\nTO_CHAR(POCT_DAY_1_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') POCT_DAY_1_PASS_DATE,\nTO_CHAR(POCT_DAY_2_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') POCT_DAY_2_PASS_DATE,\nTO_CHAR(POCT_DAY_3_PASS_DATE,''DD-MON-YYYY HH24:MI:SS'') POCT_DAY_3_PASS_DATE,\nBANKED_EXPERIENCE,\nTO_CHAR(CARD_EXPIRY_DATE,''DD-MON-YYYY HH24:MI:SS'') CARD_EXPIRY_DATE,\nREGISTRY.ENCRYPTION.ENCRYPT(CARD_ISSUE_NUMBER) CARD_ISSUE_NUMBER,\nREGISTRY.ENCRYPTION.ENCRYPT(CARD_NUMBER) CARD_NUMBER,\nENABLING_BOND_POLICY_NO,\nTO_CHAR(IPC_ISSUED_DATE,''DD-MON-YYYY HH24:MI:SS'') IPC_ISSUED_DATE,\nLOCAL_PC_BODY,\nREGISTRY.ENCRYPTION.ENCRYPT(PII_COMPANY_NAME) PII_COMPANY_NAME,\nPII_POLICY_NO,\nREGISTRY.ENCRYPTION.ENCRYPT(UPPERCASE_SURNAME) UPPERCASE_SURNAME,\nYN_IPC,\nYN_LOCAL_PC,\nYN_EXCLUDE_JOURNAL,\nTO_CHAR(FIRST_AUDIT_DATE,''DD-MON-YYYY HH24:MI:SS'') FIRST_AUDIT_DATE,\nTO_CHAR(ENABLING_BOND_EXPIRY_DATE,''DD-MON-YYYY HH24:MI:SS'') ENABLING_BOND_EXPIRY_DATE,\nPRD_CATEGORY,\nPIC_COMPANY_NAME,\nREGISTRY.ENCRYPTION.ENCRYPT(WEB_PASSWORD) WEB_PASSWORD,\nYN_RELEASE_DETAILS_MARKETING,\nYN_INSERTED_PROFILE_DB,\nIR_SOURCE,\nEMAIL_CONSENT_LEVEL,\nYN_PREVENT_ONLINE_PAYMENT,\nDEPARTMENT_TITLE,\nSINGLE_CLIENT_HUB_REFRESH,\nREPLACE(MOBILE_NUMBER,MOBILE_NUMBER, ''07777777777'') MOBILE_NUMBER,\nMOBILE_COUNTRY_CODE,\nYN_ACCA_EMPLOYERS,\nYN_RESULTS_BY_SMS,\nYN_UPDATES_BY_SMS,\nPCD_MAIL_CODE,\nEMAIL_VAL_RESULT,\nPHONE_VAL_RESULT,\nMOBILE_VAL_RESULT,\nTO_CHAR(PHONE_VALIDATED_DATE,''DD-MON-YYYY HH24:MI:SS'') PHONE_VALIDATED_DATE,\nTO_CHAR(EMAIL_VALIDATED_DATE,''DD-MON-YYYY HH24:MI:SS'') EMAIL_VALIDATED_DATE,\nTO_CHAR(MOBILE_VALIDATED_DATE,''DD-MON-YYYY HH24:MI:SS'') MOBILE_VALIDATED_DATE,\nREPLACE(VALIDATED_MOBILE_NUMBER,VALIDATED_MOBILE_NUMBER, ''07777777777'') VALIDATED_MOBILE_NUMBER,\nREPLACE(VALIDATED_PHONE_NUMBER,VALIDATED_PHONE_NUMBER, ''07777777777'') VALIDATED_PHONE_NUMBER,\nREGISTRY.ENCRYPTION.ENCRYPT(VALIDATED_EMAIL_ADDRESS) VALIDATED_EMAIL_ADDRESS,\nct.TCA_PARTY_TYPE\nFROM registry.clients c\ninner join registry.client_types ct on c.clt_type = ct.type\nWHERE  c.modified_date between TO_DATE(','''',activity('WaterMarkProdClients').output.firstRow.EXTRACT_DATE,'''',',''DD-MON-YYYY HH24:MI:SS'')',\n'AND TO_DATE(','''',activity('CurrentTimeProdClients').output.firstRow.SOURCE_TIMESTAMP,'''',',''DD-MON-YYYY HH24:MI:SS'')',';')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENTS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "ExtractClientClassificationsData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkProdClientsClassification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT\nREGISTRY.ENCRYPTION.ENCRYPT(CLI_CLIENT_ID) CLI_CLIENT_ID,\nCLA_CLASSIFICATION,\nCLV_VALUE,\nMODIFIED_BY,\nTO_CHAR(MODIFIED_DATE,''DD-MON-YYYY HH24:MI:SS'') MODIFIED_DATE,\nDATE_VALID,\nSINGLE_CLIENT_HUB_REFRESH\nFROM registry.CLIENT_CLASSIFICATIONS cc\nWHERE cc.cli_client_id not in (''0466075'',''0870492'',''1646099'')  \nand cc.modified_date between TO_DATE(','''',activity('WaterMarkProdClientsClassification').output.firstRow.EXTRACT_DATE,'''',',''DD-MON-YYYY HH24:MI:SS'')',\n'AND TO_DATE(','''',activity('CurrentTimeProdClientsClassification').output.firstRow.SOURCE_TIMESTAMP,'''',',''DD-MON-YYYY HH24:MI:SS'')',';')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENT_CLASSIFICATIONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "ExtractRegisteredPersonsData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkProdRegisteredClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT\nREGISTRY.ENCRYPTION.ENCRYPT(CLI_CLIENT_ID) CLI_CLIENT_ID,\nREGISTRY.ENCRYPTION.ENCRYPT(FIRST_NAME) FIRST_NAME,\nREGISTRY.ENCRYPTION.ENCRYPT(SURNAME) SURNAME,\nREGISTRY.ENCRYPTION.ENCRYPT(UPPERCASE_SURNAME) UPPERCASE_SURNAME,\nLAW_LAW_VARIANT_CODE,\nJSC_JOINT_SCHEME,\n''01-JAN-1990'' BIRTH_DATE,\nTO_CHAR(REGISTRATION_DATE,''DD-MON-YYYY HH24:MI:SS'') REGISTRATION_DATE,\nSBM_SUBMETHOD,\nGEN_GENDER,\nACT_ACTIVITY,\nMODIFIED_BY,\nTO_CHAR(MODIFIED_DATE,''DD-MON-YYYY HH24:MI:SS'') MODIFIED_DATE,\nTO_CHAR(SES_SESSION_DATE,''DD-MON-YYYY HH24:MI:SS'') SES_SESSION_DATE,\nCOM_CLIENT_ID,\nSPR_SPECIAL_PROJECT_CODE,\nCLI_CLIENT_ID_EB,\nTO_CHAR(MSER_TO_STUDENT_DATE,''DD-MON-YYYY HH24:MI:SS'') MSER_TO_STUDENT_DATE,\nTO_CHAR(GRADUATION_DATE,''DD-MON-YYYY HH24:MI:SS'') GRADUATION_DATE,\nTO_CHAR(ASSOCIATE_DATE,''DD-MON-YYYY HH24:MI:SS'') ASSOCIATE_DATE,\nTO_CHAR(DIPLOMA_PASSEE_DATE,''DD-MON-YYYY HH24:MI:SS'') DIPLOMA_PASSEE_DATE,\nTO_CHAR(DIPLOMA_HOLDER_DATE,''DD-MON-YYYY HH24:MI:SS'') DIPLOMA_HOLDER_DATE,\nTO_CHAR(FELLOW_DATE,''DD-MON-YYYY HH24:MI:SS'') FELLOW_DATE,\nTO_CHAR(RETIREMENT_DATE,''DD-MON-YYYY HH24:MI:SS'') RETIREMENT_DATE,\nTO_CHAR(SUSPENSION_DATE,''DD-MON-YYYY HH24:MI:SS'') SUSPENSION_DATE,\nSUR_SUSPENSION_REASON,\nRER_REINSTATEMENT_REASON,\nTO_CHAR(REINSTATEMENT_DATE,''DD-MON-YYYY HH24:MI:SS'') REINSTATEMENT_DATE,\nJOB_TITLE,\nSEL_SERVICE_LEVEL,\nPOSTFIX,\nSBF_SUBQUERY_FLAG,\nYN_SUBSCRIPTION_RAISED,\nTO_CHAR(PREVIOUS_REG_DATE,''DD-MON-YYYY HH24:MI:SS'') PREVIOUS_REG_DATE,\nTO_CHAR(SES_END_SESSION,''DD-MON-YYYY HH24:MI:SS'') SES_END_SESSION,\nTO_CHAR(DHO_COMMITTEE_DATE,''DD-MON-YYYY HH24:MI:SS'') DHO_COMMITTEE_DATE,\nDHO_CERTIFICATE_NUMBER,\nTO_CHAR(MODULE_E_REFERRAL_EXPIRES,''DD-MON-YYYY HH24:MI:SS'') MODULE_E_REFERRAL_EXPIRES,\nTO_CHAR(MODULE_F_REFERRAL_EXPIRES,''DD-MON-YYYY HH24:MI:SS'') MODULE_F_REFERRAL_EXPIRES,\nSUSPENSION_QUERY_FLAG,\nAUTOMATIC_SUSPENSION_FLAG,\nYN_SUB_DEMAND_PRINTED,\nTO_CHAR(REJECTION_DATE,''DD-MON-YYYY HH24:MI:SS'') REJECTION_DATE,\nRJR_REJECTION_REASON,\nAUTOMATIC_REMINDER_FLAG,\nAUTOMATIC_SUSPENSION_CATEGORY,\nENR_ENTRY_ROUTE,\nMTY_MEMBER_TYPE,\nYN_TOP_BRASS,\nYN_FULL_TIME_PRACTICE,\nYN_FCCA,\nYN_PAY_BY_INSTALMENT,\nINSTALMENTS_AGREED_BY,\nTO_CHAR(INSTALMENTS_AGREED_DATE,''DD-MON-YYYY HH24:MI:SS'') INSTALMENTS_AGREED_DATE,\nDEFERRED_BY,\nTO_CHAR(DEFERRAL_DATE,''DD-MON-YYYY HH24:MI:SS'') DEFERRAL_DATE,\nDFR_DEFERRAL_CODE,\nDEFERRAL_COMMENT,\nTO_CHAR(ASSOCIATE_NOTIFICATION,''DD-MON-YYYY HH24:MI:SS'') ASSOCIATE_NOTIFICATION,\nINSOLVENCY_SERVICE_NUMBER,\nTO_CHAR(FELLOW_DUE_DATE,''DD-MON-YYYY HH24:MI:SS'') FELLOW_DUE_DATE,\nYN_PERMANENT_GRADUATE,\nYN_IN_PRACTICE,\nYN_QUERY_PRACTICE,\nETO_ETHNIC_ORIGIN,\nCNT_CONTACT_ID,\nLAW_ACC_AUDIT_VARIANT_CODE,\nYN_VARIANT_CHANGE_ACKNOWLEDGED,\nYN_ACC,\nYN_IL,\nMSER_TRANSFER_TYPE,\nTO_CHAR(COM_CLIENT_ID_CHANGED_DATE,''DD-MON-YYYY HH24:MI:SS'') COM_CLIENT_ID_CHANGED_DATE,\nYN_INTERNAL_STUDENT,\nYN_FV_STUDENT,\nACR_ACTIVITY_REASON,\nREP_CLI_CLIENT_ID_LINK,\nTO_CHAR(MSER_TO_TECHNICIAN_DATE,''DD-MON-YYYY HH24:MI:SS'') MSER_TO_TECHNICIAN_DATE,\nWEX_EXPERIENCE,\nYN_AUTOMATIC_TRANSFER,\nCAT_CERTIFICATE_NUMBER,\nTO_CHAR(CAT_COMMITTEE_DATE,''DD-MON-YYYY HH24:MI:SS'') CAT_COMMITTEE_DATE,\nTO_CHAR(CAT_HOLDER_DATE,''DD-MON-YYYY HH24:MI:SS'') CAT_HOLDER_DATE,\nGRADUATE_TYPE,\nRSR_REDUCED_SUB_REASON_CODE,\nTO_CHAR(SPECIAL_GRAD_EXPIRY,''DD-MON-YYYY HH24:MI:SS'') SPECIAL_GRAD_EXPIRY,\nSRE_SUBSCRIPTION_RATE,\nYN_FELLOW,\nYN_RETIRED,\nTO_CHAR(AUTOMATIC_SUSPENSION_DATE,''DD-MON-YYYY HH24:MI:SS'') AUTOMATIC_SUSPENSION_DATE,\nTO_CHAR(TRANSFER_DATE,''DD-MON-YYYY HH24:MI:SS'') TRANSFER_DATE,\nREGISTRY.ENCRYPTION.ENCRYPT(TRAINING_MANAGER) TRAINING_MANAGER,\nYN_INSERTED_PROFILE_DB,\nREGISTRY.ENCRYPTION.ENCRYPT(TRAINING_MANAGER_EMAIL) TRAINING_MANAGER_EMAIL,\nYN_EMAIL_RESULTS,\nYN_ACCELERATED_FELLOW,\nSPR_ADD_REMOVE_FLAG,\nVAR_STREAM_UPDATE_FLAG,\nYN_ACCA_EXCHANGE,\nYN_AFFILIATE_LIST,\nTO_CHAR(DIPIFR_PASSEE_DATE,''DD-MON-YYYY HH24:MI:SS'') DIPIFR_PASSEE_DATE,\nTO_CHAR(DIPIFR_HOLDER_DATE,''DD-MON-YYYY HH24:MI:SS'') DIPIFR_HOLDER_DATE,\nYN_ONLINE_CPD_SUBMISSION,\nTO_CHAR(VAR_STREAM_SESSION,''DD-MON-YYYY HH24:MI:SS'') VAR_STREAM_SESSION,\nYN_22_GLOBAL,\nSINGLE_CLIENT_HUB_REFRESH,\nTO_CHAR(ORIGINAL_LAST_SESSION,''DD-MON-YYYY HH24:MI:SS'') ORIGINAL_LAST_SESSION,\nYN_REM_BY_SMS,\nYN_RESULTS_BY_SMS,\nYN_DISABILITY,\nFIA_CONVERSION_OPTION,\nTO_CHAR(FIA_TO_ACCA_QUAL_DATE,''DD-MON-YYYY HH24:MI:SS'') FIA_TO_ACCA_QUAL_DATE,\nYN_AUTO_TRANS_FIA_TO_ACCA\nFROM registry.REGISTERED_PERSONS rp\nWHERE  rp.modified_date between TO_DATE(','''',activity('WaterMarkProdRegisteredClients').output.firstRow.EXTRACT_DATE,'''',',''DD-MON-YYYY HH24:MI:SS'')',\n'AND TO_DATE(','''',activity('CurrentTimeProdRegisteredClients').output.firstRow.SOURCE_TIMESTAMP,'''',',''DD-MON-YYYY HH24:MI:SS'')',';')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('REGISTERED_PERSONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadClientsData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.TEMP_PROD_CLIENTS;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENTS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "TEMP_PROD_CLIENTS"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadClientClassificationsData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientClassificationsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENT_CLASSIFICATIONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "TEMP_PROD_CLIENT_CLASSIFICATIONS"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadRegisteredPersonsData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractRegisteredPersonsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.TEMP_PROD_REGISTERED_PERSONS;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')\n",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('REGISTERED_PERSONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "TEMP_PROD_REGISTERED_PERSONS"
+								}
+							}
+						]
+					},
+					{
+						"name": "ExtractClientAddressesData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT\nREGISTRY.ENCRYPTION.ENCRYPT(CLI_CLIENT_ID) CLI_CLIENT_ID,\nADDRESS_NUMBER,\nCOU_COUNTRY,\nMODIFIED_BY,\nTO_CHAR(MODIFIED_DATE,''DD-MON-YYYY HH24:MI:SS'') MODIFIED_DATE,\nYN_RESIDENTIAL_ADDRESS,\nYN_BUSINESS_ADDRESS,\nYN_VALID_ADDRESS,\nYN_USE_FOR_DOM,\nYN_MAILING_ADDRESS,\nYN_ALTERNATE_ADDRESS,\nYN_SPARE_TIME_PRACTICE,\nYN_HEAD_OFFICE_ADDRESS,\nYN_REGISTERED_OFFICE_ADDRESS,\nYN_VALIDATED_BY_QAS,\nYN_POPULATED_BY_CLIENTS,\nCOMPANY_NAME,\nJOB_TITLE,\nREGISTRY.ENCRYPTION.ENCRYPT(ADDRESS_LINE_1) ADDRESS_LINE_1,\nREGISTRY.ENCRYPTION.ENCRYPT(ADDRESS_LINE_2) ADDRESS_LINE_2,\nREGISTRY.ENCRYPTION.ENCRYPT(ADDRESS_LINE_3) ADDRESS_LINE_3,\nTOWN,\nCOUNTY,\nREGISTRY.ENCRYPTION.ENCRYPT(POSTCODE) POSTCODE,\nSORTCODE,\nPOST_REGION,\nREPLACE(TELEPHONE_NUMBER,TELEPHONE_NUMBER, ''07777777777'') TELEPHONE_NUMBER,\nREPLACE(FAX_NUMBER,FAX_NUMBER, ''07777777777'') FAX_NUMBER,\nREGISTRY.ENCRYPTION.ENCRYPT(EMAIL_ADDRESS) EMAIL_ADDRESS,\nTO_CHAR(LAST_VALID_ADDRESS_DATE,''DD-MON-YYYY HH24:MI:SS'') LAST_VALID_ADDRESS_DATE,\nYN_COP,\nCONTINUITY_NOMINEE_TYPE,\nCONTINUITY_NOMINEE_ID,\nUPPERCASE_COMPANY_NAME,\nDELIVERY_POINT_SUFFIX,\nYN_DEDUPLICATED,\nYN_PRIMARY,\nYN_PREVENT_CLEANSING,\nSINGLE_CLIENT_HUB_REFRESH,\nSOURCE_DATA_IDENTIFIER,\nADDRESS_TYPE,\nDATA_LEVEL,\nPOST_PROCESSING,\nCLIENT_APPLICATION_NAME,\nVALIDATED_BY,\nTO_CHAR(VALIDATED_DATE,''DD-MON-YYYY HH24:MI:SS'') VALIDATED_DATE\nFROM registry.CLIENT_ADDRESSES ca\nWHERE  ca.modified_date between TO_DATE(','''',activity('WaterMarkProdClientAddresses').output.firstRow.EXTRACT_DATE,'''',',''DD-MON-YYYY HH24:MI:SS'')',\n'AND TO_DATE(','''',activity('CurrentTimeProdClientAddresses').output.firstRow.SOURCE_TIMESTAMP,'''',',''DD-MON-YYYY HH24:MI:SS'')',';')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENT_ADDRESSES-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadClientAddressesData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientAddressesData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.TEMP_PROD_CLIENT_ADDRESSES;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('CLIENT_ADDRESSES-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "TEMP_PROD_CLIENT_ADDRESSES"
+								}
+							}
+						]
+					},
+					{
+						"name": "DataWaterMarkProdClients",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENTS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CurrentTimeProdClients",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "WaterMarkProdClients",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.XX_ACCA_RTC_DATA_LOAD_CONTROL\nWHERE SOURCE_SYSTEM = 'PROD'\nAND SOURCE_TABLE = 'CLIENTS';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientsonSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENTS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientsonFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientsData",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENTS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CurrentTimeProdClientsClassification",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "DataWaterMarkProdClientsClassification",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeProdClientsClassification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientsClassification').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_CLASSIFICATIONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "WaterMarkProdClientsClassification",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkProdClientsClassification",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.XX_ACCA_RTC_DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'PROD'\nAND SOURCE_TABLE = 'CLIENT_CLASSIFICATIONS';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientsClassificationOnSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientClassificationsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientsClassification').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_CLASSIFICATIONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientsClassificationOnFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientClassificationsData",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientsClassification').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_CLASSIFICATIONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CurrentTimeProdRegisteredClients",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "DataWaterMarkProdRegisteredClients",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeProdRegisteredClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdRegisteredClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REGISTERED_PERSONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "WaterMarkProdRegisteredClients",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkProdRegisteredClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.XX_ACCA_RTC_DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'PROD'\nAND SOURCE_TABLE = 'REGISTERED_PERSONS';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdRegisteredClientsOnSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractRegisteredPersonsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdRegisteredClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REGISTERED_PERSONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdRegisteredClientsOnFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractRegisteredPersonsData",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdRegisteredClients').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REGISTERED_PERSONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CurrentTimeProdClientAddresses",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "DataWaterMarkProdClientAddresses",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientAddresses').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_ADDRESSES",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "WaterMarkProdClientAddresses",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.XX_ACCA_RTC_DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'PROD'\nAND SOURCE_TABLE = 'CLIENT_ADDRESSES';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientAddressesOnSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientAddressesData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientAddresses').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_ADDRESSES",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdClientAddressesOnFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractClientAddressesData",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdClientAddresses').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "CLIENT_ADDRESSES",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "ExtractReinstatementReasonsData",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT\nREINSTATEMENT_REASON,\nDESCRIPTION,\nMODIFIED_BY,\nTO_CHAR(MODIFIED_DATE,''DD-MON-YYYY HH24:MI:SS'') MODIFIED_DATE\nFROM registry.REINSTATEMENT_REASONS;')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('REINSTATEMENT_REASONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadReinstatementReasonsData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractReinstatementReasonsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.STG_PROD_REINSTATEMENT_REASONS;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('REINSTATEMENT_REASONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "STG_PROD_REINSTATEMENT_REASONS"
+								}
+							}
+						]
+					},
+					{
+						"name": "CurrentTimeProdReinstatementReasons",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "DataWaterMarkProdReinstatementReasons",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdReinstatementReasons').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REINSTATEMENT_REASONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "WaterMarkProdReinstatementReasons",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.XX_ACCA_RTC_DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'PROD'\nAND SOURCE_TABLE = 'REINSTATEMENT_REASONS';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdReinstatementReasonsOnSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractReinstatementReasonsData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdReinstatementReasons').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REINSTATEMENT_REASONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkProdReinstatementReasonsOnFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractReinstatementReasonsData",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[XX_ACCA_RTC_LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"value": {
+										"value": "@activity('CurrentTimeProdReinstatementReasons').output.firstRow.SOURCE_TIMESTAMP",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "PROD",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "REINSTATEMENT_REASONS",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"parameters": {
+					"Extract_Year": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"v_folder_name": {
+						"type": "String"
+					},
+					"v_parent_folder": {
+						"type": "String",
+						"defaultValue": "B2C/Master/"
+					},
+					"v_set_file_date_field": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/Daily Data Interface"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:26Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Oracle_Source1')]",
+				"[concat(variables('factoryId'), '/datasets/Data_Lake_Landing_Zone')]",
+				"[concat(variables('factoryId'), '/datasets/SQL_Datawarehouse_Target')]",
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Data_Obfuscate_Load_Pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExtractSource1",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "WaterMarkSource1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": {
+									"value": "@concat('SELECT\nx,y,z\nFROM source1.table1;')",
+									"type": "Expression"
+								},
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('SUSPENSION_REASONS-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "LoadSource1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ExtractSource1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE Staging.SOURCE1_TABLE;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat(variables('v_parent_folder'),formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/Input')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@concat('Source1-YEAR-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'.csv')",
+										"type": "Expression"
+									},
+									"file_system": "landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "SOURCE1_TABLE"
+								}
+							}
+						]
+					},
+					{
+						"name": "CurrentTimeSource1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "OracleSource",
+								"oracleReaderQuery": "SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') SOURCE_TIMESTAMP FROM DUAL;",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "Oracle_Source1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "DataWaterMarkSource1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "CurrentTimeSource1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "I",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "P",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "XXX",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "DEF",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "WaterMarkSource1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "DataWaterMarkSource1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT FORMAT(ISNULL(MAX(CAST(DATA_EXTRACT_WATERMARK_HIGH AS DATETIME)),CAST(GETDATE()-1 AS DATETIME)),'dd-MMM-yyyy HH:mm:ss')  EXTRACT_DATE FROM staging.DATA_LOAD_CONTROL WHERE SOURCE_SYSTEM = 'XXX'\nAND SOURCE_TABLE = 'DEF';",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkSource1OnSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractSource1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "S",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "XXX",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "DEF",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "UpdateDataWaterMarkSource1OnFailure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExtractSource1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[LOG_DATA_LOAD]",
+							"storedProcedureParameters": {
+								"DML": {
+									"value": "U",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_HIGH": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_END_DATE": {
+									"value": null,
+									"type": "String"
+								},
+								"EXTRACT_START_DATE": {
+									"type": "String"
+								},
+								"PIPELINE_NAME": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PIPELINE_RUN_ID": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PROCESS_STATUS": {
+									"value": "E",
+									"type": "String"
+								},
+								"SOURCE_SYSTEM": {
+									"value": "XXX",
+									"type": "String"
+								},
+								"SOURCE_TABLE": {
+									"value": "DEF",
+									"type": "String"
+								},
+								"DATA_EXTRACT_WATERMARK_LOW": {
+									"value": null,
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"parameters": {
+					"Extract_Year": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"v_folder_name": {
+						"type": "String"
+					},
+					"v_parent_folder": {
+						"type": "String",
+						"defaultValue": "B2C/Master/"
+					},
+					"v_set_file_date_field": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/Daily Data Interface"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Oracle_Source1')]",
+				"[concat(variables('factoryId'), '/datasets/Data_Lake_Landing_Zone')]",
+				"[concat(variables('factoryId'), '/datasets/SQL_Datawarehouse_Target')]",
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Reference_Files_Load_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HierarchyReferenceFile",
+						"description": "",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "Reference data end point",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "@concat('{\"Folderpath\":\"landing-zone/B2C/Reference/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/','Input\"}')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ValidationforHierarchyReferenceFile",
+						"type": "Validation",
+						"dependsOn": [
+							{
+								"activity": "HierarchyReferenceFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat('B2C/Reference/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/','Input')",
+										"type": "Expression"
+									},
+									"file_name": "HierarchyReferenceFile.csv",
+									"file_system": "anding-zone"
+								}
+							},
+							"timeout": "0.00:10:00",
+							"sleep": 10
+						}
+					},
+					{
+						"name": "MoveProcessedHierarchyReferenceFile",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LoadHierarchyReferenceFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat('B2C/Reference/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/','Input')",
+										"type": "Expression"
+									},
+									"file_name": "HierarchyReferenceFile.csv",
+									"file_system": "landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat('B2C/Reference/Global/COTI/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/','Processed')",
+										"type": "Expression"
+									},
+									"file_name": "Exam_StudyMethod_Hierarchy.csv",
+									"file_system": "eds-landing-zone"
+								}
+							}
+						]
+					},
+					{
+						"name": "DeleteProcessedHierarchyReferenceFile",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "WriteMetadataforHierarchyReferenceFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "FOLDER NAME",
+										"type": "Expression"
+									},
+									"file_name": "HierarchyReferenceFile.CSV",
+									"file_system": "anding-zone"
+								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true
+							}
+						}
+					},
+					{
+						"name": "LoadHierarchyReferenceFile",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ValidationforHierarchyReferenceFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE staging.STG_HierarchyReferenceFile;",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Data_Lake_Landing_Zone",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder_name": {
+										"value": "@concat('B2C/Reference/',formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/','Input')",
+										"type": "Expression"
+									},
+									"file_name": "HierarchyReferenceFile.csv",
+									"file_system": "landing-zone"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": "Staging",
+									"table_name": "STG_HierarchyReferenceFile"
+								}
+							}
+						]
+					},
+					{
+						"name": "WriteMetadataforHierarchyReferenceFile",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "MoveProcessedHierarchyReferenceFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[staging].[WRITE_DL_METADATA]",
+							"storedProcedureParameters": {
+								"AZURE_SUBSCRIPTION": {
+									"value": "",
+									"type": "String"
+								},
+								"CREATED_DATE_TIME": {
+									"value": {
+										"value": "@formatDateTime(utcNow(),'yyyy-MM-dd hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"DATA_DOMAIN": {
+									"value": "ABC",
+									"type": "String"
+								},
+								"DATA_MODEL_CONCEPT": {
+									"value": "XYZ",
+									"type": "String"
+								},
+								"DATA_SECURITY_CLASS": {
+									"value": "Internal",
+									"type": "String"
+								},
+								"DATA_SOURCE": {
+									"value": "SharePoint",
+									"type": "String"
+								},
+								"DATA_TYPE": {
+									"value": "Reference",
+									"type": "String"
+								},
+								"EXTRACT_TYPE": {
+									"value": "Full",
+									"type": "String"
+								},
+								"FILE_DELETED_FLAG": {
+									"value": "N",
+									"type": "String"
+								},
+								"FILE_SYSTEM": {
+									"value": {
+										"value": "FILE SYSTEM",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE1": {
+									"value": {
+										"value": "@concat('Data Factory: ',pipeline().DataFactory)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE10": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE2": {
+									"value": {
+										"value": "@concat('Pipeline Name: ',pipeline().Pipeline)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE3": {
+									"value": {
+										"value": "@concat('Pipeline RunID: ',pipeline().RunId)",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE4": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE5": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE6": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE7": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE8": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_CATTRIBUTE9": {
+									"value": null,
+									"type": "String"
+								},
+								"METADATA_DATTRIBUTE1": {
+									"value": null,
+									"type": "DateTime"
+								},
+								"METADATA_DATTRIBUTE2": {
+									"value": null,
+									"type": "DateTime"
+								},
+								"METADATA_DATTRIBUTE3": {
+									"value": null,
+									"type": "DateTime"
+								},
+								"METADATA_DATTRIBUTE4": {
+									"value": null,
+									"type": "DateTime"
+								},
+								"METADATA_DATTRIBUTE5": {
+									"value": null,
+									"type": "DateTime"
+								},
+								"METADATA_NATTRIBUTE1": {
+									"value": null,
+									"type": "Int32"
+								},
+								"METADATA_NATTRIBUTE2": {
+									"value": null,
+									"type": "Int32"
+								},
+								"METADATA_NATTRIBUTE3": {
+									"value": null,
+									"type": "Int32"
+								},
+								"METADATA_NATTRIBUTE4": {
+									"value": null,
+									"type": "Int32"
+								},
+								"METADATA_NATTRIBUTE5": {
+									"value": null,
+									"type": "Int32"
+								},
+								"STORAGE_ACCOUNT": {
+									"value": {
+										"value": "@pipeline().parameters.data_lake_storage_account",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_DataWarehouse_Target",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"parameters": {
+					"data_lake_storage_account": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/Reference Data"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Data_Lake_Landing_Zone')]",
+				"[concat(variables('factoryId'), '/datasets/SQL_Datawarehouse_Target')]",
+				"[concat(variables('factoryId'), '/linkedServices/SQL_DataWarehouse_Target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Source1_Split_Child_Pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Encryption pipeline for PROD related tables",
+				"activities": [
+					{
+						"name": "GetbatchnumberforProdClients",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENTS;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdClients",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.CLIENT_ID) AS MIN_NUMBER, MAX(P.CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLIENT_ID, ntile(',activity('GetbatchnumberforProdClients').output.firstRow.batch_number,')over (ORDER BY CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENTS) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdClients",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodclients_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdClients').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdClients",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdClients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodclients_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdClientsFile",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.TEMP_PROD_CLIENTS P Where CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_CLIENTS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "GetbatchnumberforProdRegisteredPersons",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1)  batch_number FROM Staging.TEMP_PROD_REGISTERED_PERSONS;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdRegisteredPersons",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdRegisteredPersons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdRegisteredPersons').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_REGISTERED_PERSONS) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdRegisteredPersons",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdRegisteredPersons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodregisteredpersons_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdRegisteredPersons').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdRegisteredPerosns",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdRegisteredPersons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodregisteredpersons_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdRegisteredPersons",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.TEMP_PROD_REGISTERED_PERSONS P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_REGISTERED_PERSONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "GetbatchnumberforProdClientAddresses",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENT_ADDRESSES;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdClientAddresses",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdClientAddresses').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENT_ADDRESSES) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdClientAddresses",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodclientaddresses_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdClientAddresses').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdClientAddresses",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdClientAddresses",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodclientaddresses_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdClientAddresses",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.TEMP_PROD_CLIENT_ADDRESSES P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_CLIENT_ADDRESSES-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "GetbatchnumberforProdClientClassifications",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS;')\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdClientClassifications",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdClientClassifications",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.CLI_CLIENT_ID) AS MIN_NUMBER, MAX(P.CLI_CLIENT_ID) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT CLI_CLIENT_ID, ntile(',activity('GetbatchnumberforProdClientClassifications').output.firstRow.batch_number,')over (ORDER BY CLI_CLIENT_ID ASC) AS NUM \nFROM Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdClientClassifications",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdClientClassifications",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodclientclassifications_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdClientClassifications').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdClientClassifications",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdClientClassifications",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodclientclassifications_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdClientClassifications",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.TEMP_PROD_CLIENT_CLASSIFICATIONS P Where CLI_CLIENT_ID BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_CLIENT_CLASSIFICATIONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "GetbatchnumberforProdReinstatementReasons",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.STG_PROD_Reinstatement_Reasons;')\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdReinstatementReasons",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.REINSTATEMENT_REASON) AS MIN_NUMBER, MAX(P.REINSTATEMENT_REASON) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT REINSTATEMENT_REASON, ntile(',activity('GetbatchnumberforProdReinstatementReasons').output.firstRow.batch_number,')over (ORDER BY REINSTATEMENT_REASON ASC) AS NUM \nFROM Staging.stg_PROD_REINSTATEMENT_REASONs) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdReinstatementReasons",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodreinstatementreasons_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdReinstatementReasons').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdReinstatementReasons",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdReinstatementReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodreinstatementreasons_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdReinstatementReasons",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.STG_PROD_Reinstatement_Reasons P Where Reinstatement_Reason BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_REINSTATEMENT_REASONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "GetbatchnumberforProdSuspensionReasons",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT REPLACE(CEILING ((CAST(count(*) AS FLOAT)/CAST(',string(pipeline().parameters.no_of_records_per_file),' AS FLOAT)*1)),0,1) batch_number FROM Staging.stg_PROD_Suspension_Reasons;')\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "GetbatchsizeforProdSuspensionReasons",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetbatchnumberforProdSuspensionReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('SELECT MIN(P.Suspension_Reason) AS MIN_NUMBER, MAX(P.Suspension_Reason) AS MAX_NUMBER, NUM AS BATCH_NUMBER FROM \n(SELECT Suspension_Reason, ntile(',activity('GetbatchnumberforProdSuspensionReasons').output.firstRow.batch_number,')over (ORDER BY Suspension_Reason ASC) AS NUM \nFROM Staging.stg_PROD_Suspension_Reasons) P GROUP BY NUM ORDER BY NUM;')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Datawarehouse_Target",
+								"type": "DatasetReference",
+								"parameters": {
+									"schema_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@empty('')",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "SetbatchsizeforProdSuspensionReasons",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetbatchsizeforProdSuspensionReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_prodsuspensionreasons_batch_size",
+							"value": {
+								"value": "@activity('GetbatchsizeforProdSuspensionReasons').output.value",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachProdSuspensionReasons",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SetbatchsizeforProdSuspensionReasons",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('v_prodsuspensionreasons_batch_size')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "ExtractProdSuspensionReasons",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('Select * From Staging.stg_PROD_Suspension_Reasons P Where Suspension_Reason BETWEEN','''',item().MIN_NUMBER,'''',' and ','''',item().MAX_NUMBER,'''',';')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_Datawarehouse_Target",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@empty('')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Data_Lake_Landing_Zone",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_name": {
+													"value": "@pipeline().parameters.folder_name",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@concat('PROD_SUSPENSION_REASONS-DATE-',formatDateTime(utcnow(),'yyyy'),'-',formatDateTime(utcnow(),'MM'),'-',formatDateTime(utcnow(),'dd'),'-',formatDateTime(utcnow(),'HH:mm:ss'),'-',item().BATCH_NUMBER,'.csv')",
+													"type": "Expression"
+												},
+												"file_system": "eds-landing-zone"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"concurrency": 1,
+				"parameters": {
+					"no_of_records_per_file": {
+						"type": "int"
+					},
+					"data_lake_storage_account": {
+						"type": "string"
+					},
+					"folder_name": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"v_prodclients_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					},
+					"v_prodregisteredpersons_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					},
+					"v_prodclientaddresses_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					},
+					"v_prodclientclassifications_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					},
+					"v_prodreinstatementreasons_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					},
+					"v_prodsuspensionreasons_batch_size": {
+						"type": "Array",
+						"defaultValue": [
+							"0"
+						]
+					}
+				},
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/File Encryption"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:26Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQL_Datawarehouse_Target')]",
+				"[concat(variables('factoryId'), '/datasets/Data_Lake_Landing_Zone')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stage_Data_Prep_Parent_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExecuteSource1StagePrep",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Source1_Stage_Data_Prep_Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"concurrency": 1,
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Source1_Stage_Data_Prep_Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Daily_Obfuscate_Load_Parent_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Source1_DATA_Daily_Obfuscate_Load_Pipeline1",
+						"description": "",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Data_Obfuscate_Load_Pipeline1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"folder": {
+					"name": "Analytical Datawarehouse Model with File Encryption/Data Preparation Pipelines/Daily Data Interface"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-03-07T09:23:26Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Data_Obfuscate_Load_Pipeline1')]"
+			]
+		}
+	]
+}

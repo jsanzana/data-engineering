@@ -1,0 +1,6 @@
+{
+	"Data_Lake_Storage_Account": {
+		"type": "string",
+		"value": "Data_Lake_Storage_Account"
+	}
+}
