@@ -1,0 +1,5 @@
+The folder contains data engineering pipelines and codes to call Oracle stored pacakges and stored procedures from Azure data factory pipelines. 
+This will be useful for those who work with Oracle as data source for data engineering activities. 
+
+Refer to my blog to see understand how this works in action. 
+https://medium.com/nerd-for-tech/azure-data-factory-data-engineering-pipelines-with-oracle-as-source-5688f1cc7c90
