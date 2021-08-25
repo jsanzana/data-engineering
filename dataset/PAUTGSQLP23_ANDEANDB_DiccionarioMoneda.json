@@ -1,0 +1,30 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_DiccionarioMoneda",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoMoneda",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DiccionarioMonedas"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

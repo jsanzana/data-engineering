@@ -1,0 +1,42 @@
+{
+	"name": "sqldbgdaqa_AndeanDB_ProductoClase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesqa_sqldbgdaqa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreClase",
+				"type": "varchar"
+			},
+			{
+				"name": "EsPrincipal",
+				"type": "bit"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "ProductoClase"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

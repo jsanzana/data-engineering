@@ -1,0 +1,226 @@
+{
+	"name": "pipeline QA_PAUTGSQLP23_AndeanDB_TODO",
+	"properties": {
+		"activities": [
+			{
+				"name": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_Limpia_SA_AndeanDB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP1_AndeanDB_SA_a_srvsqlazsourcesqa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_AndeanDB_SA_a_srvsqlazsourcesqa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02qa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02qa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP1_AndeanDB_SA_a_srvsqlazsourcesdev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_AndeanDB_SA_a_srvsqlazsourcesdev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02dev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02dev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_Limpia_SA_AndeanDB",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_Limpia_SA_AndeanDB",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP2_PAUTGSQLP23_AndeanDB_a_SA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_Limpia_SA_AndeanDB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP2_PAUTGSQLP23_AndeanDB_a_SA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP2_AndeanDB_SA_a_srvsqlazsourcesdev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP2_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP2_AndeanDB_SA_a_srvsqlazsourcesdev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02prod",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP1_AndeanDB_SA_a_sqlccpbidwhp02prod",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP3_PAUTGSQLP23_AndeanDB_a_SA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_Limpia_SA_AndeanDB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP3_PAUTGSQLP23_AndeanDB_a_SA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_SP3_AndeanDB_SA_a_srvsqlazsourcesdev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_SP3_PAUTGSQLP23_AndeanDB_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_SP3_AndeanDB_SA_a_srvsqlazsourcesdev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-07-06T21:53:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

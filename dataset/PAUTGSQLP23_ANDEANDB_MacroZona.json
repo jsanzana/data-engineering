@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_MacroZona",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoMacrozona",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Macrozona"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

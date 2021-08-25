@@ -1,0 +1,17 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_Industria",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Industria"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

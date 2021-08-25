@@ -1,0 +1,21 @@
+{
+	"name": "Json_cursor_ctas_clientes2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_dev_saoperaciontemp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "cursor_ctas_clientes2.json",
+				"folderPath": "OnPremises/CO/ORION4",
+				"fileSystem": "dbs"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

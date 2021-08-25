@@ -1,0 +1,24 @@
+{
+	"name": "PKSEGCSOD01_BDINVERSIONES",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=True;Data Source=PKSEGCSOD01;Initial Catalog=BD_INVERSIONES",
+			"userName": "BCPDOM\\usrDataPEDesa",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVaultDev",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "usrDataPEDesaPwd"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-PE-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

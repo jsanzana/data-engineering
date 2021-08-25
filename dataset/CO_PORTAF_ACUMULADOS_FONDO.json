@@ -1,0 +1,17 @@
+{
+	"name": "CO_PORTAF_ACUMULADOS_FONDO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BOGORA201_PPORTAF",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "TAL",
+			"table": "ACUMULADOS_FONDO"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

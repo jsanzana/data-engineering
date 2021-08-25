@@ -1,0 +1,16 @@
+{
+	"name": "Az_dev_saoperaciontemp",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://saoperaciontemp.dfs.core.windows.net",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRGLUNDLU9QRVJBQ0lPTkFMLURFVl9jNWMxYTk1Ni1mM2MwLTQ3N2YtYThhNi0zYzljNzdmOGUyOGEiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeAz",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

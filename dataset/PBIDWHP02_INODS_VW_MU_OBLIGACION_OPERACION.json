@@ -1,0 +1,106 @@
+{
+	"name": "PBIDWHP02_INODS_VW_MU_OBLIGACION_OPERACION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PBIDWHP02_IN_ODS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "NRO. OBLIGACIÓN",
+				"type": "varchar"
+			},
+			{
+				"name": "FECHA EMISIÓN",
+				"type": "date"
+			},
+			{
+				"name": "NRO DE COMPROBANTE",
+				"type": "varchar"
+			},
+			{
+				"name": "TIPO DE CONCEPTO",
+				"type": "varchar"
+			},
+			{
+				"name": "SUSTENTO",
+				"type": "varchar"
+			},
+			{
+				"name": "MONEDA",
+				"type": "varchar"
+			},
+			{
+				"name": "CECO",
+				"type": "varchar"
+			},
+			{
+				"name": "PROVEEDOR",
+				"type": "varchar"
+			},
+			{
+				"name": "TIPO GASTO",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBTOTAL",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TC",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 8
+			},
+			{
+				"name": "SUBTOTAL (PEN)",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "DISTRIB.",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "SUBTOTAL DISTRIB",
+				"type": "decimal",
+				"precision": 28,
+				"scale": 8
+			},
+			{
+				"name": "SUBSIDIARIA",
+				"type": "varchar"
+			},
+			{
+				"name": "IDCONCEPTO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDEMPRESA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHA_REGISTRO",
+				"type": "date"
+			},
+			{
+				"name": "DOCUMENTO",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "VW_MU_OBLIGACION_OPERACION"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,108 @@
+{
+	"name": "pipeline BOGORA201_PORION_A_SA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy BOGORA201_PORION_TODOS_CLIENTES_ESTRUCTURA",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"oracleReaderQuery": "SELECT *\nFROM ALL_TAB_COLS\nWHERE TABLE_NAME = 'CLIENTES'\nAND     OWNER = 'TODOS';",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BOGORA201_PORION_TODOS_CLIENTES",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CSV_ORION_TODOS_CLIENTES_ESTRUCTURA",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy BOGORA201_PORION_TODOS_CLIENTES",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "BOGORA201_PORION_TODOS_CLIENTES",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_PORION_TODOS_CLIENTES",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Datos Ejemplo"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-07-24T03:50:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

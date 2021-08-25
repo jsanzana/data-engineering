@@ -1,0 +1,21 @@
+{
+	"name": "Json_DEF_FORWARDREPORTECONTABILIDAD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_QA_saopetmp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "DEF_FORWARDREPORTECONTABILIDAD.json",
+				"folderPath": "BD_INVERSIONES",
+				"fileSystem": "dbs"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

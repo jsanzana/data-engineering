@@ -1,0 +1,146 @@
+{
+	"name": "pipeline QA_PBIDWHP01_INTRANSAC_TODO",
+	"properties": {
+		"activities": [
+			{
+				"name": "pipeline QA_Limpia_SA_TRANSAC",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_Limpia_SA_TRANSAC",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_Limpia_SA_TRANSAC",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02dev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02dev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INTRANSAC_SA_a_sqldbgdadev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INTRANSAC_SA_a_sqldbgdadev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02qa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02qa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INTRANSAC_SA_a_sqldbgdaqa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INTRANSAC_SA_a_sqldbgdaqa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02prod",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INTRANSAC_SA_a_sqlccpbidwhp02prod",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-06-17T01:23:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

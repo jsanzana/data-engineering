@@ -1,0 +1,38 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_ProductoBenchmark",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "FechaFin",
+				"type": "date"
+			},
+			{
+				"name": "CodigoBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoBenchmarkObjetivo",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "ProductoBenchmark"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

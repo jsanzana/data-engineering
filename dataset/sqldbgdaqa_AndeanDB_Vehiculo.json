@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdaqa_AndeanDB_Vehiculo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesqa_sqldbgdaqa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoVehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreVehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "RazonSocial",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Vehiculo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_FuentesMercado",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreFuente",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FuentesMercado"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

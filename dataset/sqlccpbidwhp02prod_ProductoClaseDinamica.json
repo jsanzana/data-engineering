@@ -1,0 +1,86 @@
+{
+	"name": "sqlccpbidwhp02prod_ProductoClaseDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02prod_sqlccpbidwhp02prod",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "ValorCuotaApertura",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ValorCuotaCierre",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ValorCuotaAjustado",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PatrimonioApertura",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PatrimonioCierre",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "RemuneracionFija",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "RemuneracionVariable",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PorcentajeRemuneracionFija",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PorcentajeRemuneracionVariable",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FactorAjuste",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "RentabilidadDia",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TotalCuotas",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ProductoClaseDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

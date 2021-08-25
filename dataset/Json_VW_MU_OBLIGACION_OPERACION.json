@@ -1,0 +1,21 @@
+{
+	"name": "Json_VW_MU_OBLIGACION_OPERACION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_QA_saopetmp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "VW_MU_OBLIGACION_OPERACION.json",
+				"folderPath": "INODS",
+				"fileSystem": "dbs"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

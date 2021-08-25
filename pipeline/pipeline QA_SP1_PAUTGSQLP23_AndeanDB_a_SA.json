@@ -1,0 +1,1737 @@
+{
+	"name": "pipeline QA_SP1_PAUTGSQLP23_AndeanDB_a_SA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreClasificacionProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Ingresos",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoPais']"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['Fecha']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoPeriodo']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UnidadNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoLineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoMoneda']"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoNeto",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['IngresoNeto']"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoBruto",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['IngresoBruto']"
+								}
+							},
+							{
+								"source": {
+									"name": "PagoPorDistribucion",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PagoPorDistribucion']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoIngreso",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoIngreso']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Ingresos",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_Ingresos",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_IngresosDistTerceros",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['Fecha']"
+								}
+							},
+							{
+								"source": {
+									"name": "Manager",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Manager']"
+								}
+							},
+							{
+								"source": {
+									"name": "ISIN",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ISIN']"
+								}
+							},
+							{
+								"source": {
+									"name": "Fondo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Fondo']"
+								}
+							},
+							{
+								"source": {
+									"name": "Serie",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Serie']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoMoneda']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoPais']"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Cliente']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['AUM']"
+								}
+							},
+							{
+								"source": {
+									"name": "Rebate",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['Rebate']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoInstrumento']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_IngresosDistTerceros",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_IngresosDistTerceros",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_LineaNegocio",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoLineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreCortoLineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreLineaNegocio']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_LineaNegocio",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_LineaNegocio",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Presupuesto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoPais']"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['Fecha']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoPeriodo']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UnidadNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoLineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoPresupuesto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoPresupuesto']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoFrecuencia",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoFrecuencia']"
+								}
+							},
+							{
+								"source": {
+									"name": "Frecuencia",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Frecuencia']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoMoneda']"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoBruto",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['IngresoBruto']"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoNeto",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['IngresoNeto']"
+								}
+							},
+							{
+								"source": {
+									"name": "PagoPorDistribucion",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PagoPorDistribucion']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Presupuesto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_Presupuesto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Producto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "DomicilioRegulatorio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['DomicilioRegulatorio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoVehiculo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoVehiculo']"
+								}
+							},
+							{
+								"source": {
+									"name": "Vehiculo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Vehiculo']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoLineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LineaNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificacion",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Clasificacion']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "SubClasificacion",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SubClasificacion']"
+								}
+							},
+							{
+								"source": {
+									"name": "Exposicion",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Exposicion']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UnidadNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "SubUnidadNegocio",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SubUnidadNegocio']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubTipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "SubTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SubTipoProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Producto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_Producto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ProductoClase",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoClase",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoClase']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreClase",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreClase']"
+								}
+							},
+							{
+								"source": {
+									"name": "EsPrincipal",
+									"type": "Boolean"
+								},
+								"sink": {
+									"path": "$['EsPrincipal']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoMoneda']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProductoClase",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProductoClase']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ProductoClase",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_ProductoClase",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ProductoClaseDinamica",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProductoClase",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProductoClase']"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['Fecha']"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaApertura",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['ValorCuotaApertura']"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaCierre",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['ValorCuotaCierre']"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaAjustado",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['ValorCuotaAjustado']"
+								}
+							},
+							{
+								"source": {
+									"name": "PatrimonioApertura",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PatrimonioApertura']"
+								}
+							},
+							{
+								"source": {
+									"name": "PatrimonioCierre",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PatrimonioCierre']"
+								}
+							},
+							{
+								"source": {
+									"name": "RemuneracionFija",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['RemuneracionFija']"
+								}
+							},
+							{
+								"source": {
+									"name": "RemuneracionVariable",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['RemuneracionVariable']"
+								}
+							},
+							{
+								"source": {
+									"name": "PorcentajeRemuneracionFija",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PorcentajeRemuneracionFija']"
+								}
+							},
+							{
+								"source": {
+									"name": "PorcentajeRemuneracionVariable",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['PorcentajeRemuneracionVariable']"
+								}
+							},
+							{
+								"source": {
+									"name": "FactorAjuste",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['FactorAjuste']"
+								}
+							},
+							{
+								"source": {
+									"name": "RentabilidadDia",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['RentabilidadDia']"
+								}
+							},
+							{
+								"source": {
+									"name": "TotalCuotas",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['TotalCuotas']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ProductoClaseDinamica",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_ProductoClaseDinamica",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SistemaProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSistema",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSistema']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProductoSistema",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoProductoSistema']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SistemaProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_SistemaProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SubClasificacionProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoSubClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreSubClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreSubClasificacionProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SubClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_SubClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SubTipoProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoSubTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubTipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreSubTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreSubTipoProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SubTipoProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_SubTipoProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SubUnidad",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoSubUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoSubunidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreCortoSubunidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreSubUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreSubUnidad']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SubUnidad",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_SubUnidad",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_TipoPeriodo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoPeriodo']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoPeriodo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoPeriodo']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_TipoPeriodo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_TipoPeriodo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_TipoProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoTipoProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreTipoProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreTipoProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_TipoProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_TipoProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Unidad",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreCortoUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreUnidad']"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoUnidad",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TipoUnidad']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Unidad",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_Unidad",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Vehiculo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoVehiculo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoVehiculo']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreVehiculo",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreVehiculo']"
+								}
+							},
+							{
+								"source": {
+									"name": "RazonSocial",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RazonSocial']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Vehiculo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_Vehiculo",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA/SA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T01:02:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

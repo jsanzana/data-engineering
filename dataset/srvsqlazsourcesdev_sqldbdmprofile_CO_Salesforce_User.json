@@ -1,0 +1,17 @@
+{
+	"name": "srvsqlazsourcesdev_sqldbdmprofile_CO_Salesforce_User",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CO",
+			"table": "Salesforce_User"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

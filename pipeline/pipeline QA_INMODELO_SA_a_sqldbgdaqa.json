@@ -1,0 +1,374 @@
+{
+	"name": "pipeline QA_INMODELO_SA_a_sqldbgdaqa",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy SA_sqldbgdaqa_VDATAINDIARIA",
+				"description": "",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE IN_MODELO.V_DATA_IN_DIARIA;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['FECHA']"
+								},
+								"sink": {
+									"name": "FECHA",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COD_IN']"
+								},
+								"sink": {
+									"name": "COD_IN",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COD_NEG']"
+								},
+								"sink": {
+									"name": "COD_NEG",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TIP_PRD']"
+								},
+								"sink": {
+									"name": "TIP_PRD",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MONEDA']"
+								},
+								"sink": {
+									"name": "MONEDA",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VALOR_CUOTA']"
+								},
+								"sink": {
+									"name": "VALOR_CUOTA",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PRODUCTO']"
+								},
+								"sink": {
+									"name": "PRODUCTO",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AUM']"
+								},
+								"sink": {
+									"name": "AUM",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AUM_PEN']"
+								},
+								"sink": {
+									"name": "AUM_PEN",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['INGRESOS']"
+								},
+								"sink": {
+									"name": "INGRESOS",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COMISION']"
+								},
+								"sink": {
+									"name": "COMISION",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RENT_DIARIA']"
+								},
+								"sink": {
+									"name": "RENT_DIARIA",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NUM_COUTAS']"
+								},
+								"sink": {
+									"name": "NUM_COUTAS",
+									"type": "Decimal"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_VDATAINDIARIA",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_INMODELO_VDATAINDIARIA",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_sqldbgdaqa_VDATAINMENSUAL",
+				"description": "",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE IN_MODELO.V_DATA_IN_MENSUAL;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CODMES']"
+								},
+								"sink": {
+									"name": "CODMES",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FECHA']"
+								},
+								"sink": {
+									"name": "FECHA",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COD_IN']"
+								},
+								"sink": {
+									"name": "COD_IN",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COD_NEG']"
+								},
+								"sink": {
+									"name": "COD_NEG",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PRODUCTO']"
+								},
+								"sink": {
+									"name": "PRODUCTO",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TIP_PRD']"
+								},
+								"sink": {
+									"name": "TIP_PRD",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MONEDA']"
+								},
+								"sink": {
+									"name": "MONEDA",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VALOR_CUOTA']"
+								},
+								"sink": {
+									"name": "VALOR_CUOTA",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AUM']"
+								},
+								"sink": {
+									"name": "AUM",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AUM_PEN']"
+								},
+								"sink": {
+									"name": "AUM_PEN",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['INGRESOS']"
+								},
+								"sink": {
+									"name": "INGRESOS",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['COMISION']"
+								},
+								"sink": {
+									"name": "COMISION",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RENT_DIARIA']"
+								},
+								"sink": {
+									"name": "RENT_DIARIA",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NUM_COUTAS']"
+								},
+								"sink": {
+									"name": "NUM_COUTAS",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SUSCRIPCIONES']"
+								},
+								"sink": {
+									"name": "SUSCRIPCIONES",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RESCATES']"
+								},
+								"sink": {
+									"name": "RESCATES",
+									"type": "Int32"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_VDATAINMENSUAL",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_INMODELO_VDATAINMENSUAL",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-06-08T22:04:54Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

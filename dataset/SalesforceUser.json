@@ -1,0 +1,16 @@
+{
+	"name": "SalesforceUser",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SalesforceCOTest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SalesforceObject",
+		"schema": [],
+		"typeProperties": {
+			"objectApiName": "User"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

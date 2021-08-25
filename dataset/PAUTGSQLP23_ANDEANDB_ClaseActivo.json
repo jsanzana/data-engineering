@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_ClaseActivo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoClaseActivo",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ClaseActivo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

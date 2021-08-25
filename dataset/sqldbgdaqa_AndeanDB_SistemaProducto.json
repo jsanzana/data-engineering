@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdaqa_AndeanDB_SistemaProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesqa_sqldbgdaqa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSistema",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProductoSistema",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "SistemaProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

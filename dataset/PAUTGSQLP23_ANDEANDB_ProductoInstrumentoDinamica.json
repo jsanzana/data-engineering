@@ -1,0 +1,101 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_ProductoInstrumentoDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "ValorMercado",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Precio",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TirMercado",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Duracion",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DuracionModificada",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CalificacionLocal",
+				"type": "varchar"
+			},
+			{
+				"name": "CalificacionFC",
+				"type": "varchar"
+			},
+			{
+				"name": "Plazo",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ValorNominal",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CantidadValores",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PrecioLimpio",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "InteresCorrido",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Subyacente",
+				"type": "varchar"
+			},
+			{
+				"name": "Modalidad",
+				"type": "varchar"
+			},
+			{
+				"name": "ValoracionCompra",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ProductoInstrumentoDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

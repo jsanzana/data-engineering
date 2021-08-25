@@ -1,0 +1,31 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_Calificacion",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Calificacion",
+				"type": "varchar"
+			},
+			{
+				"name": "NivelCalificacion",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "CodigoRiesgoCrediticio",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Calificacion"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

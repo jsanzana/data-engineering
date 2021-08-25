@@ -1,0 +1,26 @@
+{
+	"name": "sqldbgdadev_TipoProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "TipoProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

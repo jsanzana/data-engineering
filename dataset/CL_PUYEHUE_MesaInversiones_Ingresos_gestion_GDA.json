@@ -1,0 +1,17 @@
+{
+	"name": "CL_PUYEHUE_MesaInversiones_Ingresos_gestion_GDA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CL",
+			"table": "Ingresos_gestion_GDA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

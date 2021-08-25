@@ -1,0 +1,26 @@
+{
+	"name": "sqlccpbidwhp02dev_ClasificacionProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02dev_sqlccpbidwhp02dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoClasificacionProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreClasificacionProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ClasificacionProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

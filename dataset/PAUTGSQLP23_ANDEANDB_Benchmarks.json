@@ -1,0 +1,30 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_Benchmarks",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Benchmarks"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

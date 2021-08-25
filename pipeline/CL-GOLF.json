@@ -1,0 +1,635 @@
+{
+	"name": "CL-GOLF",
+	"properties": {
+		"activities": [
+			{
+				"name": "CL-GOLF-Vista_comisiones_facturadas_CDP",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ID_PORTAFOLIO",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_PORTAFOLIO",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "FECHA",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_SIN_IVA",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "COMISION_SIN_IVA",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_IVA",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_IVA",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_CON_IVA",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "COMISION_CON_IVA",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Vista_comisiones_facturadas_CDP",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CL_Vista_comisiones_facturadas_CDP",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "CL-GOLF-Vista_Mov_Operaciones_ADC_CDP",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FECHA_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "FECHA_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA_VENCIMIENTO_OPERACION_PLAZO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "FECHA_VENCIMIENTO_OPERACION_PLAZO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA_EFECTIVA_PAGO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "FECHA_EFECTIVA_PAGO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_OPERACION",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_OPERACION",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_PORTAFOLIO",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_PORTAFOLIO",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "CODIGO_PORTAFOLIO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "CODIGO_PORTAFOLIO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_INSTRUMENTO",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_INSTRUMENTO",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "NEMOTECNICO_INSTRUMENTO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "NEMOTECNICO_INSTRUMENTO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_EMISOR",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_EMISOR",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "EMISOR",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "EMISOR",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_TIPO_MOVIMIENTO",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_TIPO_MOVIMIENTO",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "CODIGO_TIPO_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "CODIGO_TIPO_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GLOSA_TIPO_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "GLOSA_TIPO_MOVIMIENTO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_DIVISA_OPERACION",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_DIVISA_OPERACION",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "DIVISA_OPERACION",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "DIVISA_OPERACION",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_OPERACION",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_OPERACION",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "DIVISA_PORTAFOLIO",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "DIVISA_PORTAFOLIO",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_OPERACION_DIVISA_PORTAFOLIO",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_OPERACION_DIVISA_PORTAFOLIO",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_COMISION",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_COMISION",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_COMISION_DIVISA_OPE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_COMISION_DIVISA_OPE",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "MONTO_NETO_DIVISA_PORTAFOLIO",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MONTO_NETO_DIVISA_PORTAFOLIO",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "GLOSA_OPERACION",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "GLOSA_OPERACION",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ESTADO_OPERACION",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "ESTADO_OPERACION",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PRECIO_COMPRA_OPERACION",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "PRECIO_COMPRA_OPERACION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "TITULOS",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "TITULOS",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "NOMINALES",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "NOMINALES",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_ENTIDAD_DEPOSITARIA",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_ENTIDAD_DEPOSITARIA",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "ENTIDAD_DEPOSITARIA",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "ENTIDAD_DEPOSITARIA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CONDICION_LIQUIDACION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CONDICION_LIQUIDACION",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_COMPRA",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "TASA_COMPRA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PLAZO",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "PLAZO",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_CONTRAPARTE",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID_CONTRAPARTE",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "RUT_CONTRAPARTE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "RUT_CONTRAPARTE",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CUPON_COMPRA",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "CUPON_COMPRA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA_VALOR",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "FECHA_VALOR",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PRECIO_MERCADO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "PRECIO_MERCADO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_MERCADO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "TASA_MERCADO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_MERCADO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "VALOR_MERCADO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Vista_Mov_Operaciones_ADC_CDP",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CL_Vista_Mov_Operaciones_ADC_CDP",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Perfilamiento"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-04-13T22:34:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

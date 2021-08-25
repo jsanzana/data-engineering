@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_TipoProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TipoProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,132 @@
+{
+	"name": "pipeline QA_PBIDWHP01_INTRANSAC_a_SA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy PBIDWHP01_INTRANSAC_VDATAINMOVIMIENTOSDIARIO",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FECHA",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['FECHA']"
+								}
+							},
+							{
+								"source": {
+									"name": "COD_IN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['COD_IN']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUSCRIPCIONES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['SUSCRIPCIONES']"
+								}
+							},
+							{
+								"source": {
+									"name": "RESCATES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['RESCATES']"
+								}
+							},
+							{
+								"source": {
+									"name": "TRASPASOS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['TRASPASOS']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUSCRIPCIONES_CUOTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['SUSCRIPCIONES_CUOTAS']"
+								}
+							},
+							{
+								"source": {
+									"name": "RESCATES_CUOTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['RESCATES_CUOTAS']"
+								}
+							},
+							{
+								"source": {
+									"name": "TRASPASOS_CUOTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['TRASPASOS_CUOTAS']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PBIDWHP01_INTRANSAC_VDATAINMOVIMIENTOSDIARIO",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_VDATAINMOVIMIENTOSDIARIO",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA/SA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T01:02:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,146 @@
+{
+	"name": "pipeline QA_PBIDWHP02_INODS_TODO",
+	"properties": {
+		"activities": [
+			{
+				"name": "pipeline QA_Limpia_SA_INODS",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_Limpia_SA_INODS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_PBIDWHP02_INODS_a_SA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_Limpia_SA_INODS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INODS_SA_a_sqlccpbidwhp02dev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INODS_SA_a_sqlccpbidwhp02dev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INODS_SA_a_sqlccpbidwhp02qa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INODS_SA_a_sqlccpbidwhp02qa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INODS_SA_a_sqlccpbidwhp02prod",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INODS_SA_a_sqlccpbidwhp02prod",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INODS_SA_a_sqldbfinanzasdev",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INODS_SA_a_sqldbfinanzasdev",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pipeline QA_INODS_SA_a_sqldbfinanzasqa",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pipeline QA_PBIDWHP02_INODS_a_SA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline QA_INODS_SA_a_sqldbfinanzasqa",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T00:53:36Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

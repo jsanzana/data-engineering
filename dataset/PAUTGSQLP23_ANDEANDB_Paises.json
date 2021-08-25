@@ -1,0 +1,34 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_Paises",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoPais",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoRegion",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMacroZona",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Paises"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

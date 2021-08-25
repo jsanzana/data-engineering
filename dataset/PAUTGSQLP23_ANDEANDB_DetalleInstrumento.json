@@ -1,0 +1,35 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_DetalleInstrumento",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoInstrumentoDetalle",
+				"type": "varchar"
+			},
+			{
+				"name": "Peso",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DetalleInstrumento"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

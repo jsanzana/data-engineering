@@ -1,0 +1,17 @@
+{
+	"name": "SalesforceCOTest",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Salesforce",
+		"typeProperties": {
+			"environmentUrl": "https://test.salesforce.com/",
+			"username": "usrdatacodesa@credicorpcapital.com",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRGLUNDLU9QRVJBQ0lPTkFMLURFVl9iYWFlYTUwYS1hNjE2LTRiNDQtOWQxZS0wNzg0Yzc0NDdhMjUiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeAz",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

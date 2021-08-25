@@ -1,0 +1,202 @@
+{
+	"name": "PKSEGCSOD01_BDINVERSIONES_FORWARD_OPERACION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PKSEGCSOD01_BDINVERSIONES",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "IDEMPRESA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDPORTAFOLIO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHAOPERACION",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "NROTICKET",
+				"type": "varchar"
+			},
+			{
+				"name": "IDFORWARDOPERACION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDMONEDA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PLAZO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHAREGISTRO",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "MONTOUSD",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TCFORWARD",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 8
+			},
+			{
+				"name": "MONTOPEN",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 10
+			},
+			{
+				"name": "FECHAFIXING",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "FECHASETTLEMENT",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "UTILIDADPEN",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "UTILIDADUSD",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TCSPOT",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 8
+			},
+			{
+				"name": "TASAUSD",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 6
+			},
+			{
+				"name": "TASAPEN",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 6
+			},
+			{
+				"name": "DIFERENCIAL",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 8
+			},
+			{
+				"name": "IDMODALIDAD",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDCONTRAPARTE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDESTADO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDESTADOOPERACION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDNODO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDUSUARIO",
+				"type": "varchar"
+			},
+			{
+				"name": "CTACARGO",
+				"type": "varchar"
+			},
+			{
+				"name": "CTAABONO",
+				"type": "varchar"
+			},
+			{
+				"name": "OBSERVACION",
+				"type": "varchar"
+			},
+			{
+				"name": "TCCIERRE",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 8
+			},
+			{
+				"name": "IDCONTRATO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDFORWARD",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDENTIFICADOR",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE1",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE2",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE3",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE4",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FORWARD_OPERACION"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,38 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_Tasas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoTasa",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreTasa",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoExterno",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Tasas"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

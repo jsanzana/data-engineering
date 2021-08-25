@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_TasasLibreRiesgo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoTasa",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "TasasLibreRiesgo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

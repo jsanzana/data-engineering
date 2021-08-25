@@ -1,0 +1,17 @@
+{
+	"name": "srvsqlazsourcesdev_sqldbdmprofile_SF_TINCI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CO",
+			"table": "SF_TINCI"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

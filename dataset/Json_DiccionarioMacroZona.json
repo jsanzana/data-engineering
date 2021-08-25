@@ -1,0 +1,21 @@
+{
+	"name": "Json_DiccionarioMacroZona",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_QA_saopetmp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "DiccionarioMacroZona.json",
+				"folderPath": "andeandb",
+				"fileSystem": "dbs"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

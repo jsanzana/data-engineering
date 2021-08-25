@@ -1,0 +1,46 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_AlternativosDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "CapitalComprometido",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoLlamadoCapital",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoDistribRendimientos",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoDistribCapital",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "AlternativosDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

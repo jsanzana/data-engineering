@@ -1,0 +1,102 @@
+{
+	"name": "sqlccpbidwhp02qa_TVW_MU_OBLIGACION_OPERACION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02qa_sqlccpbidwhp02qa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "NRO. OBLIGACIÓN",
+				"type": "varchar"
+			},
+			{
+				"name": "FECHA EMISIÓN",
+				"type": "date"
+			},
+			{
+				"name": "NRO DE COMPROBANTE",
+				"type": "varchar"
+			},
+			{
+				"name": "TIPO DE CONCEPTO",
+				"type": "varchar"
+			},
+			{
+				"name": "SUSTENTO",
+				"type": "varchar"
+			},
+			{
+				"name": "MONEDA",
+				"type": "varchar"
+			},
+			{
+				"name": "CECO",
+				"type": "varchar"
+			},
+			{
+				"name": "PROVEEDOR",
+				"type": "varchar"
+			},
+			{
+				"name": "TIPO GASTO",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBTOTAL",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TC",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 8
+			},
+			{
+				"name": "SUBTOTAL (PEN)",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "DISTRIB.",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "SUBTOTAL DISTRIB",
+				"type": "decimal",
+				"precision": 28,
+				"scale": 8
+			},
+			{
+				"name": "SUBSIDIARIA",
+				"type": "varchar"
+			},
+			{
+				"name": "IDCONCEPTO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDEMPRESA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHA_REGISTRO",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TVW_MU_OBLIGACION_OPERACION"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

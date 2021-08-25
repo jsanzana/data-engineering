@@ -1,0 +1,20 @@
+{
+	"name": "Sftp_PIP",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Sftp",
+		"typeProperties": {
+			"host": "sftp.piplatam.com",
+			"port": 22,
+			"skipHostKeyValidation": true,
+			"authenticationType": "Basic",
+			"userName": "Credicorp_Capital",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRGLUNDLU9QRVJBQ0lPTkFMLURFVl9jZGRkODVjNi04NGVjLTQxZDgtYmZkMS03YzQ0MjY3Mjc3ZmIiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeAz",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,231 @@
+{
+	"name": "pipeline QA_PBIDWHP02_INODS_a_SA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy PBIDWHP02_INODS_VW_MU_OBLIGACION_OPERACION",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "NRO. OBLIGACIÓN",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NRO'][' OBLIGACIÓN']"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA EMISIÓN",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['FECHA EMISIÓN']"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO DE COMPROBANTE",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NRO DE COMPROBANTE']"
+								}
+							},
+							{
+								"source": {
+									"name": "TIPO DE CONCEPTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TIPO DE CONCEPTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUSTENTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SUSTENTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "MONEDA",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MONEDA']"
+								}
+							},
+							{
+								"source": {
+									"name": "CECO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CECO']"
+								}
+							},
+							{
+								"source": {
+									"name": "PROVEEDOR",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['PROVEEDOR']"
+								}
+							},
+							{
+								"source": {
+									"name": "TIPO GASTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TIPO GASTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUBTOTAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['SUBTOTAL']"
+								}
+							},
+							{
+								"source": {
+									"name": "TC",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['TC']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUBTOTAL (PEN)",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['SUBTOTAL (PEN)']"
+								}
+							},
+							{
+								"source": {
+									"name": "DISTRIB.",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['DISTRIB']['']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUBTOTAL DISTRIB",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['SUBTOTAL DISTRIB']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUBSIDIARIA",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SUBSIDIARIA']"
+								}
+							},
+							{
+								"source": {
+									"name": "IDCONCEPTO",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['IDCONCEPTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "IDEMPRESA",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['IDEMPRESA']"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA_REGISTRO",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['FECHA_REGISTRO']"
+								}
+							},
+							{
+								"source": {
+									"name": "DOCUMENTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['DOCUMENTO']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PBIDWHP02_INODS_VW_MU_OBLIGACION_OPERACION",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_VW_MU_OBLIGACION_OPERACION",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA/SA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T01:02:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

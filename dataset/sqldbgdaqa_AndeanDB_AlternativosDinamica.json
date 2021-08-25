@@ -1,0 +1,46 @@
+{
+	"name": "sqldbgdaqa_AndeanDB_AlternativosDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "CapitalComprometido",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoLlamadoCapital",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoDistribRendimientos",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FlujoDistribCapital",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "AlternativosDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

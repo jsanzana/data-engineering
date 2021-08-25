@@ -1,0 +1,19 @@
+{
+	"name": "saopetmp_dbs_inods_path",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_QA_saopetmp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "INODS",
+				"fileSystem": "dbs"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

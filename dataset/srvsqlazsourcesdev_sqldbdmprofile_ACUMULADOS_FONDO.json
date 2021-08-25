@@ -1,0 +1,17 @@
+{
+	"name": "srvsqlazsourcesdev_sqldbdmprofile_ACUMULADOS_FONDO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CO",
+			"table": "ACUMULADOS_FONDO"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

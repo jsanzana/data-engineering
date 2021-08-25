@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoClasificacionProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreClasificacionProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ClasificacionProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

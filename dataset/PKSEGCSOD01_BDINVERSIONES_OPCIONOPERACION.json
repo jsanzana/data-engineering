@@ -1,0 +1,156 @@
+{
+	"name": "PKSEGCSOD01_BDINVERSIONES_OPCIONOPERACION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PKSEGCSOD01_BDINVERSIONES",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "IDEMPRESA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDPORTAFOLIO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHAOPERACION",
+				"type": "date"
+			},
+			{
+				"name": "NROTICKET",
+				"type": "varchar"
+			},
+			{
+				"name": "IDOPCIONOPERACION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDTIPOOPCION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDMONEDA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDCONTRAPARTE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MONTOUSD",
+				"type": "decimal",
+				"precision": 24,
+				"scale": 2
+			},
+			{
+				"name": "STRIKEPRICE1",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 6
+			},
+			{
+				"name": "STRIKEPRICE2",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 6
+			},
+			{
+				"name": "STRIKEPRICE3",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 6
+			},
+			{
+				"name": "STRIKEPRICE4",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 6
+			},
+			{
+				"name": "STRIKEPRICE5",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 6
+			},
+			{
+				"name": "FECHAFIXING",
+				"type": "date"
+			},
+			{
+				"name": "FECHASETTLEMENT",
+				"type": "date"
+			},
+			{
+				"name": "OBSERVACIONES",
+				"type": "varchar"
+			},
+			{
+				"name": "IDESTADOOPCION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IDUSUARIO",
+				"type": "varchar"
+			},
+			{
+				"name": "FECHAREGISTRO",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "NOMINAL",
+				"type": "decimal",
+				"precision": 24,
+				"scale": 2
+			},
+			{
+				"name": "PRIMAPAGADA",
+				"type": "decimal",
+				"precision": 24,
+				"scale": 2
+			},
+			{
+				"name": "IDENTIFICADOR",
+				"type": "varchar"
+			},
+			{
+				"name": "IDOPCION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SUBYACENTE1",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE2",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE3",
+				"type": "varchar"
+			},
+			{
+				"name": "SUBYACENTE4",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OPCION_OPERACION"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

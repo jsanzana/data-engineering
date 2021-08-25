@@ -1,0 +1,17 @@
+{
+	"name": "CL_Vista_comisiones_facturadas_CDP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CL",
+			"table": "Vista_comisiones_facturadas_CDP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

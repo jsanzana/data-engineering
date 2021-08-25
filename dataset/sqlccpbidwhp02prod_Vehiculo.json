@@ -1,0 +1,30 @@
+{
+	"name": "sqlccpbidwhp02prod_Vehiculo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02prod_sqlccpbidwhp02prod",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoVehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreVehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "RazonSocial",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Vehiculo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

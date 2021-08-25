@@ -1,0 +1,69 @@
+{
+	"name": "sqlccpbidwhp02dev_Ingresos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02dev_sqlccpbidwhp02dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoPais",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoTipoPeriodo",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "UnidadNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "LineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "varchar"
+			},
+			{
+				"name": "IngresoNeto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "IngresoBruto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PagoPorDistribucion",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TipoIngreso",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Ingresos"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

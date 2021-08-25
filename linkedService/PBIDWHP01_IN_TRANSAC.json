@@ -1,0 +1,16 @@
+{
+	"name": "PBIDWHP01_IN_TRANSAC",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=PBIDWHP01;initial catalog=IN_TRANSAC;user id=usr_datam_sv1",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlMWM1NDhjOC02YzQ5LTQwNTQtYmRhMC1jNTMwZTQ4ZjkwMGEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-PE-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

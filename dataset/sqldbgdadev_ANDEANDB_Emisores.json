@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_Emisores",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoEmisor",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoEmisor",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreEmisor",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Emisores"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,100 @@
+{
+	"name": "PBIDWHP01_INMODELO_VDATAINMENSUAL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PBIDWHP01_IN_MODELO",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CODMES",
+				"type": "decimal",
+				"precision": 6,
+				"scale": 0
+			},
+			{
+				"name": "FECHA",
+				"type": "date"
+			},
+			{
+				"name": "COD_IN",
+				"type": "decimal",
+				"precision": 4,
+				"scale": 0
+			},
+			{
+				"name": "COD_NEG",
+				"type": "varchar"
+			},
+			{
+				"name": "PRODUCTO",
+				"type": "varchar"
+			},
+			{
+				"name": "TIP_PRD",
+				"type": "varchar"
+			},
+			{
+				"name": "MONEDA",
+				"type": "varchar"
+			},
+			{
+				"name": "VALOR_CUOTA",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 10
+			},
+			{
+				"name": "AUM",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 8
+			},
+			{
+				"name": "AUM_PEN",
+				"type": "decimal",
+				"precision": 28,
+				"scale": 10
+			},
+			{
+				"name": "INGRESOS",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "COMISION",
+				"type": "decimal",
+				"precision": 12,
+				"scale": 8
+			},
+			{
+				"name": "RENT_DIARIA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NUM_COUTAS",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 6
+			},
+			{
+				"name": "SUSCRIPCIONES",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RESCATES",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "V_DATA_IN_MENSUAL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

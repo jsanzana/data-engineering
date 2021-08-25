@@ -1,0 +1,368 @@
+{
+	"name": "pipeline QA_PBIDWHP01_INMODELO_a_SA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy PBIDWHP01_INMODELO_VDATAINDIARIA",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FECHA",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['FECHA']"
+								}
+							},
+							{
+								"source": {
+									"name": "COD_IN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['COD_IN']"
+								}
+							},
+							{
+								"source": {
+									"name": "COD_NEG",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['COD_NEG']"
+								}
+							},
+							{
+								"source": {
+									"name": "TIP_PRD",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TIP_PRD']"
+								}
+							},
+							{
+								"source": {
+									"name": "MONEDA",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MONEDA']"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_CUOTA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['VALOR_CUOTA']"
+								}
+							},
+							{
+								"source": {
+									"name": "PRODUCTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['PRODUCTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['AUM']"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM_PEN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['AUM_PEN']"
+								}
+							},
+							{
+								"source": {
+									"name": "INGRESOS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['INGRESOS']"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['COMISION']"
+								}
+							},
+							{
+								"source": {
+									"name": "RENT_DIARIA",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['RENT_DIARIA']"
+								}
+							},
+							{
+								"source": {
+									"name": "NUM_COUTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['NUM_COUTAS']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PBIDWHP01_INMODELO_VDATAINDIARIA",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_VDATAINDIARIA",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PBIDWHP01_INMODELO_VDATAINMENSUAL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CODMES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['CODMES']"
+								}
+							},
+							{
+								"source": {
+									"name": "FECHA",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['FECHA']"
+								}
+							},
+							{
+								"source": {
+									"name": "COD_IN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['COD_IN']"
+								}
+							},
+							{
+								"source": {
+									"name": "COD_NEG",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['COD_NEG']"
+								}
+							},
+							{
+								"source": {
+									"name": "PRODUCTO",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['PRODUCTO']"
+								}
+							},
+							{
+								"source": {
+									"name": "TIP_PRD",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TIP_PRD']"
+								}
+							},
+							{
+								"source": {
+									"name": "MONEDA",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MONEDA']"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_CUOTA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['VALOR_CUOTA']"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['AUM']"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM_PEN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['AUM_PEN']"
+								}
+							},
+							{
+								"source": {
+									"name": "INGRESOS",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['INGRESOS']"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['COMISION']"
+								}
+							},
+							{
+								"source": {
+									"name": "RENT_DIARIA",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['RENT_DIARIA']"
+								}
+							},
+							{
+								"source": {
+									"name": "NUM_COUTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"path": "$['NUM_COUTAS']"
+								}
+							},
+							{
+								"source": {
+									"name": "SUSCRIPCIONES",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['SUSCRIPCIONES']"
+								}
+							},
+							{
+								"source": {
+									"name": "RESCATES",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['RESCATES']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PBIDWHP01_INMODELO_VDATAINMENSUAL",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_VDATAINMENSUAL",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA/SA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T01:02:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

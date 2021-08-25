@@ -1,0 +1,98 @@
+{
+	"name": "sqldbgdadev_Producto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "DomicilioRegulatorio",
+				"type": "char"
+			},
+			{
+				"name": "CodigoVehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "Vehiculo",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "LineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoClasificacionProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "Clasificacion",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubClasificacionProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "SubClasificacion",
+				"type": "varchar"
+			},
+			{
+				"name": "Exposicion",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "UnidadNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "SubUnidadNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "SubTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Producto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

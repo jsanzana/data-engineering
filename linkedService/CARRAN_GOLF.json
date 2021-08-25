@@ -1,0 +1,17 @@
+{
+	"name": "CARRAN_GOLF",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=CARRAN;initial catalog=GOLF",
+			"userName": "CAPITALDOMCL\\usrDataCLProd",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJjYWVmNDE0Ny1kZDFkLTQwMjUtYjc4Ni0wNWRjOTQzOWMxNjQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-CL-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

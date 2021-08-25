@@ -1,0 +1,17 @@
+{
+	"name": "CL_Vista_Mov_Operaciones_ADC_CDP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbdmprofile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CL",
+			"table": "VISTA_MOV_OPERACIONES_ADC_CDP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

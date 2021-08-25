@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_Benchmarks",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Benchmarks"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

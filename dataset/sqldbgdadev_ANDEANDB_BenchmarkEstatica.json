@@ -1,0 +1,57 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_BenchmarkEstatica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTasa",
+				"type": "varchar"
+			},
+			{
+				"name": "EsMoneda",
+				"type": "bit"
+			},
+			{
+				"name": "Spread",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PesoBenchmark",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PesoTactico",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "BenchmarkEstatica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,34 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_DiccionarioEmisores",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoEmisor",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoEmisor",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreEmisor",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DiccionarioEmisores"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

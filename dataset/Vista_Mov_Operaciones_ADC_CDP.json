@@ -1,0 +1,198 @@
+{
+	"name": "Vista_Mov_Operaciones_ADC_CDP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CARRAN_GOLF",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "FECHA_MOVIMIENTO",
+				"type": "char"
+			},
+			{
+				"name": "FECHA_VENCIMIENTO_OPERACION_PLAZO",
+				"type": "char"
+			},
+			{
+				"name": "FECHA_EFECTIVA_PAGO",
+				"type": "char"
+			},
+			{
+				"name": "ID_OPERACION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ID_PORTAFOLIO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CODIGO_PORTAFOLIO",
+				"type": "char"
+			},
+			{
+				"name": "ID_INSTRUMENTO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NEMOTECNICO_INSTRUMENTO",
+				"type": "char"
+			},
+			{
+				"name": "ID_EMISOR",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EMISOR",
+				"type": "char"
+			},
+			{
+				"name": "ID_TIPO_MOVIMIENTO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CODIGO_TIPO_MOVIMIENTO",
+				"type": "char"
+			},
+			{
+				"name": "GLOSA_TIPO_MOVIMIENTO",
+				"type": "char"
+			},
+			{
+				"name": "ID_DIVISA_OPERACION",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DIVISA_OPERACION",
+				"type": "char"
+			},
+			{
+				"name": "MONTO_OPERACION",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DIVISA_PORTAFOLIO",
+				"type": "char"
+			},
+			{
+				"name": "MONTO_OPERACION_DIVISA_PORTAFOLIO",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "MONTO_COMISION",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "MONTO_COMISION_DIVISA_OPE",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "MONTO_NETO_DIVISA_PORTAFOLIO",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "GLOSA_OPERACION",
+				"type": "char"
+			},
+			{
+				"name": "ESTADO_OPERACION",
+				"type": "char"
+			},
+			{
+				"name": "PRECIO_COMPRA_OPERACION",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "TITULOS",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "NOMINALES",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ID_ENTIDAD_DEPOSITARIA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ENTIDAD_DEPOSITARIA",
+				"type": "char"
+			},
+			{
+				"name": "CONDICION_LIQUIDACION",
+				"type": "varchar"
+			},
+			{
+				"name": "TASA_COMPRA",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "PLAZO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ID_CONTRAPARTE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RUT_CONTRAPARTE",
+				"type": "varchar"
+			},
+			{
+				"name": "CUPON_COMPRA",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "FECHA_VALOR",
+				"type": "char"
+			},
+			{
+				"name": "PRECIO_MERCADO",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "TASA_MERCADO",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "VALOR_MERCADO",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "VISTA_MOV_OPERACIONES_ADC_CDP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

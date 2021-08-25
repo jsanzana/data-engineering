@@ -1,0 +1,17 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_Macrozona",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Macrozona"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

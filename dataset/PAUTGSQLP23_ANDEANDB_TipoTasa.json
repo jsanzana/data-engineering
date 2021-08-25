@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_TipoTasa",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoTipoTasa",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TipoTasa"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

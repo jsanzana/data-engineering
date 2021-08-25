@@ -1,0 +1,17 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_Paises",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Paises"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

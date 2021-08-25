@@ -1,0 +1,17 @@
+{
+	"name": "FARELLONES_CONCILIACION_INTERNACIONAL",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=FARELLONES;initial catalog=CONCILIACION_INTERNACIONAL",
+			"userName": "CAPITALDOMCL\\usrDataCLDesa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIyYTFlNmJmYi1lNDg2LTRkNjUtOTg2Yi0xODllMGRkY2EzZTYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-CL-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

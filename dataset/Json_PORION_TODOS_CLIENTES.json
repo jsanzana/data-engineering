@@ -1,0 +1,21 @@
+{
+	"name": "Json_PORION_TODOS_CLIENTES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Az_dev_saoperaciontemp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "PORION_TODOS_CLIENTES.json",
+				"folderPath": "OnPremises/CO/ORION",
+				"fileSystem": "dbs"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

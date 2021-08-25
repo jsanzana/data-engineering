@@ -1,0 +1,30 @@
+{
+	"name": "sqlccpbidwhp02prod_SubTipoProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02prod_sqlccpbidwhp02prod",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoSubTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreSubTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SubTipoProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

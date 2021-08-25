@@ -1,0 +1,36 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_ComisionProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "ComisionEA",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "GastosEA",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "ComisionProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,1683 @@
+{
+	"name": "CO-SIFI",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy CO_SIFI_SF_TINCI",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE CO.SF_TINCI;",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "INCI_FOND",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_FOND",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_OPIN",
+									"type": "String"
+								},
+								"sink": {
+									"name": "INCI_OPIN",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_FECCIE",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "INCI_FECCIE",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRINI",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRINI",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNIANT",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNIANT",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNIBRU",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNIBRU",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNINET",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNINET",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RBRDIA",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_RBRDIA",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RBRPER",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_RBRPER",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RNEDIA",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_RNEDIA",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RNEPER",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_RNEPER",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_INGDIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_INGDIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_EGRDIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_EGRDIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRDOP",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRDOP",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRACO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRACO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRCIE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRCIE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_COMDIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_COMDIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_COMMES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_COMMES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RETDIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_RETDIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RETMES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_RETMES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RENDIS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_RENDIS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNICIE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNICIE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNIINI",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNIINI",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VING_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VING_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VGAS_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VGAS_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VANU_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VANU_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VFON_ARN",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VFON_ARN",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VFON_ART",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VFON_ART",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UAPO_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UAPO_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_URTI_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_URTI_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UANU_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UANU_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UFON_ART",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UFON_ART",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VPRE_CIE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VPRE_CIE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_FECCRE",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "INCI_FECCRE",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_USUA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "INCI_USUA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_CGPL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_CGPL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN30",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN30",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN180",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN180",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN365",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN365",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_RENPROM",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_RENPROM",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VOLATILIDAD",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_VOLATILIDAD",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN30_BR",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN30_BR",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN180_BR",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN180_BR",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_REN365_BR",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "INCI_REN365_BR",
+									"type": "Double",
+									"physicalType": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VING_GAS_INES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VING_GAS_INES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VAPO_RET_INES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VAPO_RET_INES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRRENDBR_POS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRRENDBR_POS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRRENDBR_NEG",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRRENDBR_NEG",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRRFTE_POS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRRFTE_POS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VLRRFTE_NEG",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VLRRFTE_NEG",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UAJR_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UAJR_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VAJR_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VAJR_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VAJUS_RF_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VAJUS_RF_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UAJUS_RF_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UAJUS_RF_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_VTRAS_RF_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_VTRAS_RF_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UTRAS_RF_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UTRAS_RF_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_COMDIA_FCP",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_COMDIA_FCP",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_COMMES_FCP",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_COMMES_FCP",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_UNINET_NVO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_UNINET_NVO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_EGRDIA_RDBRUTO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_EGRDIA_RDBRUTO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "INCI_EGRDIA_RDNETO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "INCI_EGRDIA_RDNETO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CO_SIFI_SF_TINCI",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "srvsqlazsourcesdev_sqldbdmprofile_SF_TINCI",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy CO_PORTAF_ACUMULADOS_FONDO",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OracleSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FECHA",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "FECHA",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_APERTURAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_APERTURAS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_INCREMENTOS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_INCREMENTOS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_RETIROS_PARCIALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_RETIROS_PARCIALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_RETIROS_TOTALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_RETIROS_TOTALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_DEVOLUCIONES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_DEVOLUCIONES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_NOTAS_DEBITO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_NOTAS_DEBITO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_NOTAS_CREDITO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_NOTAS_CREDITO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_APERTURAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_APERTURAS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_INCREMENTOS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_INCREMENTOS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_RETIROS_PARCIALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_RETIROS_PARCIALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_RETIROS_TOTALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_RETIROS_TOTALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_DEVOLUCIONES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_DEVOLUCIONES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_RND_DEVOLUCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_RND_DEVOLUCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_COMISION_DEVOLUCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_COMISION_DEVOLUCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_RETENCION_DEVOLUCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_RETENCION_DEVOLUCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_DEBITO_COMISION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_DEBITO_COMISION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_DEBITO_RETENCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_DEBITO_RETENCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_DEBITO_CAPITAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_DEBITO_CAPITAL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_DEBITO_RENDIM",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_DEBITO_RENDIM",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_CREDITO_COMISION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_CREDITO_COMISION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_CREDITO_RETENCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_CREDITO_RETENCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_CREDITO_CAPITAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_CREDITO_CAPITAL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_NOTAS_CREDITO_RENDIM",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_NOTAS_CREDITO_RENDIM",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_FONDO_INICIAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_FONDO_INICIAL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_FONDO_FINAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_FONDO_FINAL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_BRUTA_RRF",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_BRUTA_RRF",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_BRUTA_RRV",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_BRUTA_RRV",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_BRUTA_RRV",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_BRUTA_RRV",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_BRUTA_RRF",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_BRUTA_RRF",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_RRF_ABONADA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_RRF_ABONADA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_RRV_ABONADA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_RRV_ABONADA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_RRF_ABONADA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_RRF_ABONADA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_RRV_ABONADA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_RRV_ABONADA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_RENTA_FIJA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_RENTA_FIJA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UTILIDAD_RENTA_VARIABLE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UTILIDAD_RENTA_VARIABLE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_RENTA_FIJA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_RENTA_FIJA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PERDIDA_RENTA_VARIABLE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PERDIDA_RENTA_VARIABLE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RND_CJE_TOTALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "RND_CJE_TOTALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_RENTA_FIJA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_RENTA_FIJA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_RENTA_VAR",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_RENTA_VAR",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_ADMINISTRACION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_ADMINISTRACION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_INVERSIONES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_INVERSIONES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_CAPITAL",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_CAPITAL",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_RENDIMIENTOS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_RENDIMIENTOS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_FIJA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_FIJA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RETENCION_ABONADA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "RETENCION_ABONADA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RETENCION_DEDUCIDA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "RETENCION_DEDUCIDA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RETENCION_CANJE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "RETENCION_CANJE",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UNIDADES_INICIALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UNIDADES_INICIALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "UNIDADES_FINALES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "UNIDADES_FINALES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RENTA_BRUTA_DIARIA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "RENTA_BRUTA_DIARIA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "RENTA_NETA_DIARIA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "RENTA_NETA_DIARIA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_EFECTIVA_BRUTA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TASA_EFECTIVA_BRUTA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_EFECTIVA_NETA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TASA_EFECTIVA_NETA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_NOMINAL_BRUTA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TASA_NOMINAL_BRUTA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_NOMINAL_NETA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TASA_NOMINAL_NETA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "COMISION_DIA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "COMISION_DIA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_UNIDAD_HOY",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VALOR_UNIDAD_HOY",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_UNIDAD_MANANA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VALOR_UNIDAD_MANANA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NIT_NEGOCIO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NIT_NEGOCIO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_FONDO_ANTES_DISTRIBUIR",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_FONDO_ANTES_DISTRIBUIR",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_RETENCION_ACUMULADA_CTB",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_RETENCION_ACUMULADA_CTB",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_COMISION_ACUMULADA_CTB",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_COMISION_ACUMULADA_CTB",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_INGRESOS_CTB",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_INGRESOS_CTB",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_GASTOS_CTB",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_GASTOS_CTB",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "RENTA_BRUTA_PERIODICA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "RENTA_BRUTA_PERIODICA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "RENTA_NETA_PERIODICA",
+									"type": "String"
+								},
+								"sink": {
+									"name": "RENTA_NETA_PERIODICA",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "VLR_MULTA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VLR_MULTA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PORCENTAJE_RENTA_FIJA",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PORCENTAJE_RENTA_FIJA",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PORCENTAJE_RENTA_VAR",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PORCENTAJE_RENTA_VAR",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "TIPO_RESOLUCION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "TIPO_RESOLUCION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "FACTOR_RIESGO",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "FACTOR_RIESGO",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NUMERO_CUENTAS",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NUMERO_CUENTAS",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NUMERO_SUSCRIPTORES",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NUMERO_SUSCRIPTORES",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NRO_BACKUP",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NRO_BACKUP",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "VALOR_IVA_COMISION",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "VALOR_IVA_COMISION",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ESTADO_TRANSMISION",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ESTADO_TRANSMISION",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "HORA_INICIO",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "HORA_INICIO",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "HORA_FIN",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "HORA_FIN",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "HORA_GRABAR",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "HORA_GRABAR",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "TASA_8",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TASA_8",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CO_PORTAF_ACUMULADOS_FONDO",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "srvsqlazsourcesdev_sqldbdmprofile_ACUMULADOS_FONDO",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Perfilamiento"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-13T22:22:57Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

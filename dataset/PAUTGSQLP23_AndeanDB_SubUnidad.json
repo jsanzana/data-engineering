@@ -1,0 +1,34 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_SubUnidad",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoSubUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoSubunidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreSubUnidad",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SubUnidad"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

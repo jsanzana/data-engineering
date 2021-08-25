@@ -1,0 +1,16 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=10.80.154.223;initial catalog=ANDEANDB;user id=usrSqlDataPEAndean",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxMDkwODNiYS1jNjAyLTRkMDYtYWI0Ni05ZTgwN2Q3NDMzZWUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-PE-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

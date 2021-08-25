@@ -1,0 +1,34 @@
+{
+	"name": "sqldbgdadev_LineaNegocio",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreLineaNegocio",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "LineaNegocio"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

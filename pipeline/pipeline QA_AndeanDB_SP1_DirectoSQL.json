@@ -1,0 +1,2037 @@
+{
+	"name": "pipeline QA_AndeanDB_SP1_DirectoSQL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CodigoClasificacionProducto']"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreClasificacionProducto",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['NombreClasificacionProducto']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Ingresos",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Ingresos;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoNeto",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "IngresoNeto",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoBruto",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "IngresoBruto",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PagoPorDistribucion",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PagoPorDistribucion",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoIngreso",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TipoIngreso",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Ingresos",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_Ingresos",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_IngresosDistTerceros",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.IngresosDistTerceros;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Manager",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Manager",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ISIN",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "ISIN",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "Fondo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fondo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Serie",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Serie",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Cliente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AUM",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "AUM",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "Rebate",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "Rebate",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoInstrumento",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_IngresosDistTerceros",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_IngresosDistTerceros",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_LineaNegocio",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.LineaNegocio;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreCortoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_LineaNegocio",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_LineaNegocio",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Presupuesto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Presupuesto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoPais",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoPresupuesto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TipoPresupuesto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoFrecuencia",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoFrecuencia",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Frecuencia",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Frecuencia",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoBruto",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "IngresoBruto",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "IngresoNeto",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "IngresoNeto",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PagoPorDistribucion",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PagoPorDistribucion",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Presupuesto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_Presupuesto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Producto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Producto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DomicilioRegulatorio",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "DomicilioRegulatorio",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Vehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Vehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoLineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LineaNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificacion",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Clasificacion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SubClasificacion",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SubClasificacion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Exposicion",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Exposicion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "UnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SubUnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SubUnidadNegocio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Producto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_Producto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ProductoClase",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ProductoClase;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreClase",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreClase",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EsPrincipal",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "EsPrincipal",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProductoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProductoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ProductoClase",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_ProductoClase",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_ProductoClaseDinamica",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ProductoClaseDinamica;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProductoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProductoClase",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaApertura",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "ValorCuotaApertura",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaCierre",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "ValorCuotaCierre",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "ValorCuotaAjustado",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "ValorCuotaAjustado",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PatrimonioApertura",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PatrimonioApertura",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PatrimonioCierre",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PatrimonioCierre",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "RemuneracionFija",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "RemuneracionFija",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "RemuneracionVariable",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "RemuneracionVariable",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PorcentajeRemuneracionFija",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PorcentajeRemuneracionFija",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "PorcentajeRemuneracionVariable",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "PorcentajeRemuneracionVariable",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "FactorAjuste",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "FactorAjuste",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "RentabilidadDia",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "RentabilidadDia",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "TotalCuotas",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "TotalCuotas",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_ProductoClaseDinamica",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_ProductoClaseDinamica",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SistemaProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.SistemaProducto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoSistema",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSistema",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoProductoSistema",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoProductoSistema",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SistemaProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_SistemaProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SubTipoProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.SubTipoProducto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoSubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreSubTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreSubClasificacionProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SubTipoProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_SubTipoProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_SubUnidad",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.SubUnidad;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoSubunidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreCortoSubunidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreSubUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_SubUnidad",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_SubUnidad",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_TipoPeriodo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.TipoPeriodo;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoTipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TipoPeriodo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_TipoPeriodo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_TipoPeriodo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_TipoProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.TipoProducto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreTipoProducto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_TipoProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_TipoProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Unidad",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Unidad;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreCortoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreCortoUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreUnidad",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoUnidad",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "TipoUnidad",
+									"type": "String",
+									"physicalType": "char"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Unidad",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_Unidad",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy PAUTGSQLP23_AndeanDB_Vehiculo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Vehiculo;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CodigoVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CodigoVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NombreVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NombreVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RazonSocial",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "RazonSocial",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PAUTGSQLP23_AndeanDB_Vehiculo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_Vehiculo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_ClasificacionProducto",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy PAUTGSQLP23_AndeanDB_ClasificacionProducto",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ClasificacionProducto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdaqa_AndeanDB_ClasificacionProducto",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-04T20:58:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

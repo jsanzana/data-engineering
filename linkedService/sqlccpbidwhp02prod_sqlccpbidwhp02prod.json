@@ -1,0 +1,16 @@
+{
+	"name": "sqlccpbidwhp02prod_sqlccpbidwhp02prod",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=sql-cc-pbidwhp02-prod.database.windows.net;initial catalog=sql-cc-pbidwhp02-prod;user id=admincc",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRGLUNDLU9QRVJBQ0lPTkFMLURFVl8zZTAxNzQ0NS1hN2QyLTQxOGUtYWQzNC0wODAyNDIyMzI3MDgiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeAz",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

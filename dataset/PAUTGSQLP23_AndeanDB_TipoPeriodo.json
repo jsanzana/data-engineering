@@ -1,0 +1,26 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_TipoPeriodo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoTipoPeriodo",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoPeriodo",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TipoPeriodo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

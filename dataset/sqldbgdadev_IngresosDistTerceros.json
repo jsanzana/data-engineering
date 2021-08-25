@@ -1,0 +1,68 @@
+{
+	"name": "sqldbgdadev_IngresosDistTerceros",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "Manager",
+				"type": "varchar"
+			},
+			{
+				"name": "ISIN",
+				"type": "char"
+			},
+			{
+				"name": "Fondo",
+				"type": "varchar"
+			},
+			{
+				"name": "Serie",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			},
+			{
+				"name": "CodigoPais",
+				"type": "char"
+			},
+			{
+				"name": "Cliente",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "AUM",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Rebate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "IngresosDistTerceros"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

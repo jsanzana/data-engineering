@@ -1,0 +1,34 @@
+{
+	"name": "sqlccpbidwhp02dev_LineaNegocio",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02dev_sqlccpbidwhp02dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreLineaNegocio",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "LineaNegocio"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

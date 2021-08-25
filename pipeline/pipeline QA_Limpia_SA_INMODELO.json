@@ -1,0 +1,46 @@
+{
+	"name": "pipeline QA_Limpia_SA_INMODELO",
+	"properties": {
+		"activities": [
+			{
+				"name": "Borra Json Tablas INMODELO SA",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "saopetmp_dbs_inmodelo_path",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "Az_QA_saopetmp",
+							"type": "LinkedServiceReference"
+						},
+						"path": "dbs/INMODELO/log"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"wildcardFileName": "*.json",
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/QA/SA"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-13T01:04:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

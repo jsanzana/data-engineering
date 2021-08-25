@@ -1,0 +1,17 @@
+{
+	"name": "sqldbgdaqa_INTRANSAC_VDATAINMOVIMIENTOSDIARIO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesqa_sqldbgdaqa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "IN_TRANSAC",
+			"table": "V_DATA_IN_MOVIMIENTOS_DIARIO"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,4833 @@
+{
+	"name": "pipeline Datos SalesForce",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Account",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "MasterRecordId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "MasterRecordId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Division",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Division",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LastName",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FirstName",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Salutation",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Salutation",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordTypeId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "RecordTypeId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ParentId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ParentId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingStreet",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingStreet",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingCity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingCity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingState",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingState",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingPostalCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingPostalCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingCountry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingCountry",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingLatitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "BillingLatitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingLongitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "BillingLongitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingGeocodeAccuracy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "BillingGeocodeAccuracy",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingStreet",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingStreet",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingCity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingCity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingState",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingState",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingPostalCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingPostalCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingCountry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingCountry",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingLatitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "ShippingLatitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingLongitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "ShippingLongitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ShippingGeocodeAccuracy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ShippingGeocodeAccuracy",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Phone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Phone",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fax",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Fax",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountNumber",
+									"type": "String"
+								},
+								"sink": {
+									"name": "AccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Website",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Website",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PhotoUrl",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PhotoUrl",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sic",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Sic",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Industry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Industry",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AnnualRevenue",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "AnnualRevenue",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NumberOfEmployees",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "NumberOfEmployees",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "Ownership",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ownership",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TickerSymbol",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TickerSymbol",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rating",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Rating",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Site",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Site",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "OwnerId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedById",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CreatedById",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedById",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LastModifiedById",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "LastActivityDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "LastActivityDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "MayEdit",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "MayEdit",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "IsLocked",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "IsLocked",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "LastViewedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "LastViewedDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "LastReferencedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "LastReferencedDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonContactId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonContactId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "IsPersonAccount",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "IsPersonAccount",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingStreet",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingStreet",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingCity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingCity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingState",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingState",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingPostalCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingPostalCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingCountry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingCountry",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingLatitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PersonMailingLatitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingLongitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PersonMailingLongitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMailingGeocodeAccuracy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMailingGeocodeAccuracy",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherStreet",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherStreet",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherCity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherCity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherState",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherState",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherPostalCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherPostalCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherCountry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherCountry",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherLatitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PersonOtherLatitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherLongitude",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "PersonOtherLongitude",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherGeocodeAccuracy",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherGeocodeAccuracy",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonMobilePhone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonMobilePhone",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonHomePhone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonHomePhone",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonOtherPhone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonOtherPhone",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonAssistantPhone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonAssistantPhone",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonEmail",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonEmail",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonTitle",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonTitle",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonDepartment",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonDepartment",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonAssistantName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonAssistantName",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonLeadSource",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonLeadSource",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonBirthdate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "PersonBirthdate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonHasOptedOutOfEmail",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "PersonHasOptedOutOfEmail",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonDoNotCall",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "PersonDoNotCall",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonLastCURequestDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "PersonLastCURequestDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonLastCUUpdateDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "PersonLastCUUpdateDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonEmailBouncedReason",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PersonEmailBouncedReason",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonEmailBouncedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "PersonEmailBouncedDate",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Jigsaw",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Jigsaw",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "JigsawCompanyId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "JigsawCompanyId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountSource",
+									"type": "String"
+								},
+								"sink": {
+									"name": "AccountSource",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SicDesc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "SicDesc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Estado_de_vinculacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Estado_de_vinculacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Edad__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Edad__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Hijos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Hijos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Suma_Rentabilidad__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Suma_Rentabilidad__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "NumeroInversiones__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "NumeroInversiones__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Rentabilidad_promedio__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Rentabilidad_promedio__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Perfil_de_riesgo__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Perfil_de_riesgo__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rechazado_vinculacion__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Rechazado_vinculacion__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "CORRESPONDENCIA__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CORRESPONDENCIA__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ORION__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ORION__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SIF__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "SIF__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "POR__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "POR__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCIONES__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ACCIONES__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DIVISAS__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DIVISAS__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DERIVADOS__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DERIVADOS__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vencimiento__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vencimiento__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Correo_electronico__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Correo_electronico__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Causal_rechazo_CRM__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Causal_rechazo_CRM__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cantidad_direcciones__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cantidad_direcciones__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ByPass__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "ByPass__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Motivo_rechazo_suspensi_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Motivo_rechazo_suspensi_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Soportes_faltantes__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Soportes_faltantes__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Estado_comercial__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Estado_comercial__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "EsPrueba__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "EsPrueba__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_ultima_actividad_relativa__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_ultima_actividad_relativa__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Prospectos_exceso_datos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Prospectos_exceso_datos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Sigla__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Sigla__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Clientes_PJ_deficiencia_datos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Clientes_PJ_deficiencia_datos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_principal__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_principal__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Clientes_PN_deficiencia_datos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Clientes_PN_deficiencia_datos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_secundaria__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_secundaria__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Subtipo__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Subtipo__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cantidad_de_cuentas_bancarias__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cantidad_de_cuentas_bancarias__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Expedido_en_old__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Expedido_en_old__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_sociedad__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_sociedad__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Autoretenedor__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Autoretenedor__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Gran_contribuyente__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Gran_contribuyente__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Institucional_Internacional__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Institucional_Internacional__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Empresa_donde_trabaja__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Empresa_donde_trabaja__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ext_tel__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Ext_tel__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Ext_fax__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Ext_fax__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Maneja_recursos_p_blicos__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Maneja_recursos_p_blicos__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_empleado_p_blico__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_empleado_p_blico__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Goza_de_reconocimiento_p_blico__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Goza_de_reconocimiento_p_blico__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificacion_segmentacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Clasificacion_segmentacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Declara_renta__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Declara_renta__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Realiza_Operaciones_en_ME__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Realiza_Operaciones_en_ME__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Monto_en_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Monto_en_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Periodicidad__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Periodicidad__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Pa_ses__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Pa_ses__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_operaciones_en_ME__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_operaciones_en_ME__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Escritura_de_Const_No__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Escritura_de_Const_No__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Notaria__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Notaria__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_Constitucion__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_Constitucion__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Pais_del_cliente__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Pais_del_cliente__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ano_ltima_calificacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ano_ltima_calificacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Capital_autorizado__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Capital_autorizado__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Capital_suscrito__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Capital_suscrito__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Capital_pagado__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Capital_pagado__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Ano_inf_financiera__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Ano_inf_financiera__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Vencimiento_inf_Financiera__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Vencimiento_inf_Financiera__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Ventas_netas__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Ventas_netas__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Utilidad_operacional__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Utilidad_operacional__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Gasto_por_intereses__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Gasto_por_intereses__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Utilidad_neta__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Utilidad_neta__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Caja_disponible__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Caja_disponible__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Caja_liquida_Inversiones_Temporales__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Caja_liquida_Inversiones_Temporales__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Caja_por_recuperaci_n_de_cuentas_por_cob__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Caja_por_recuperaci_n_de_cuentas_por_cob__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Caja_por_movimiento_de_inventarios__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Caja_por_movimiento_de_inventarios__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Caja_por_recuperaci_n_otros_activos_ctes__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Caja_por_recuperaci_n_otros_activos_ctes__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Flujo_de_caja__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Flujo_de_caja__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cuentas_por_cobrar_clientes__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cuentas_por_cobrar_clientes__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Inventarios__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Inventarios__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "CSC_Validos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "CSC_Validos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_deuda_financiera_CP__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_deuda_financiera_CP__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Proveedores__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_Proveedores__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_deuda_financiera_LP__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_deuda_financiera_LP__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Pasivos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_Pasivos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Capital_Com_n__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Capital_Com_n__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Capital_preferente__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Capital_preferente__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_reservas__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_reservas__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_patrimonio__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_patrimonio__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Flujo_de_caja_Neto__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Flujo_de_caja_Neto__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Monto_maximo_de_inversion_Modelo__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Monto_maximo_de_inversion_Modelo__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Monto_m_ximo_de_inversi_n_Manual__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Monto_m_ximo_de_inversi_n_Manual__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Depurado__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Depurado__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_de_canje__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_de_canje__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Raz_n_depuraci_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Raz_n_depuraci_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Razon_depuracion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Razon_depuracion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmentaci_n_ltimo_a_o__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmentaci_n_ltimo_a_o__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vencimiento_cupos__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vencimiento_cupos__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Perfil__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Perfil__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "A_o_declaraci_n_de_renta__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "A_o_declaraci_n_de_renta__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmentaci_n_a_o_anterior__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmentaci_n_a_o_anterior__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmentaci_n_incial__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmentaci_n_incial__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_de_camara_de_comercio__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_de_camara_de_comercio__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_ACCIONES__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_ACCIONES__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_ACTIVAL__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_ACTIVAL__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_DERIVADOS__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_DERIVADOS__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_DV_ORION__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_DV_ORION__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_INMOVAL__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_INMOVAL__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_ORION__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_ORION__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_POR__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Codigo_POR__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_SIF__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Codigo_SIF__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Descripci_n_actividad_econ_mica__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Descripci_n_actividad_econ_mica__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_independiente__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_independiente__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Actualizado_AviancaAval__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Actualizado_AviancaAval__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_corte_inf_financiera__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_corte_inf_financiera__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_suspensi_n__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_suspensi_n__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Nro_solicitudes_vinculacion_abiertas__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Nro_solicitudes_vinculacion_abiertas__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Ecopetrol_Ago_2011__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Ecopetrol_Ago_2011__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Ley_550__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Ley_550__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "N_mero_de_incumplimientos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "N_mero_de_incumplimientos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Numero_identificacion__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Numero_identificacion__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Numero_identificacion_busqueda__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Numero_identificacion_busqueda__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Exito_Sep_2011__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Exito_Sep_2011__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Observaciones_de_incumplimientos__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Observaciones_de_incumplimientos__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Davivienda_Nov_2011__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Davivienda_Nov_2011__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "R_gimen_fiscal__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "R_gimen_fiscal__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sector__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Sector__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Grupo_Sura_Nov_2011__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Grupo_Sura_Nov_2011__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_identificacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_identificacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_inversionista__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_inversionista__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_gastos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_gastos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "CSC_activos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "CSC_activos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cantidad_de_ordenantes__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cantidad_de_ordenantes__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_Actualizaci_n__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_Actualizaci_n__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_ultima_actividad__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_ultima_actividad__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_ultima_comision__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_ultima_comision__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Reg_camara_comercio__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Reg_camara_comercio__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Reg_camara_de_comercio_No__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Reg_camara_de_comercio_No__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_activos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_activos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Identificador_unico__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Identificador_unico__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Secuencia_identificador__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Secuencia_identificador__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_cliente__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_cliente__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_ordenante__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_ordenante__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Ordenante_plataforma_acciones__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Ordenante_plataforma_acciones__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Ordenante_plataforma_divisas__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Ordenante_plataforma_divisas__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "C_digo_CIIU__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "C_digo_CIIU__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmentacion_anterior__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmentacion_anterior__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Expedicion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Fecha_Expedicion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "POBOX__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "POBOX__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_sin_riesgo__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_sin_riesgo__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vencimiento_cupo_de_canje__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vencimiento_cupo_de_canje__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_free_delivery__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_free_delivery__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vencimiento_cupo_free_delivery__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vencimiento_cupo_free_delivery__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_precumplimiento__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_precumplimiento__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vencimiento_cupo_precumplimient__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vencimiento_cupo_precumplimient__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Patrimonio_autonomo__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Patrimonio_autonomo__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Envia_extracto__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Envia_extracto__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Ingresos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Ingresos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "IdentificacionFormateado__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "IdentificacionFormateado__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Gastos__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Gastos__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Cupo_Precumplimiento_MILA__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Cupo_Precumplimiento_MILA__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Cupo_Precumplimiento_Titulos_MILA__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Cupo_Precumplimiento_Titulos_MILA__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Sector_Economico__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Sector_Economico__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Imprimir_extracto__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Imprimir_extracto__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_calificacion_de_riesgo__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_calificacion_de_riesgo__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_calificacion_de_riesgo_cualitativo__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_calificacion_de_riesgo_cualitativo__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_calificacion_de_riesgo_financiero__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Total_calificacion_de_riesgo_financiero__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Gestion_mercadeo__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Gestion_mercadeo__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Habilitar_ordenante_como_prospecto__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Habilitar_ordenante_como_prospecto__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_ultima_asignacion__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_ultima_asignacion__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_ultima_actividad_relativa__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_ultima_actividad_relativa__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Migrado__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Migrado__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Expedido_en__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Expedido_en__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_ACTIVAL__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_ACTIVAL__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_DV_ORION__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_DV_ORION__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_FONVAL__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_FONVAL__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_INMOVAL__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_INMOVAL__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_ORION__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_ORION__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Activo_en_POR__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Activo_en_POR__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_vinculacion__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_vinculacion__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Nro_Identificacin_for__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Nro_Identificacin_for__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Codigo_Primera_Cuenta__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Codigo_Primera_Cuenta__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cantidad_de_cuentas_deposito__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cantidad_de_cuentas_deposito__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Estado_sincronizacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Estado_sincronizacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SRLF_Calcular_SARLAFT__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "SRLF_Calcular_SARLAFT__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Banca_Privada__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Banca_Privada__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificacion_FATCA__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Clasificacion_FATCA__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Observaciones_Clasificacion_FATCA__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Observaciones_Clasificacion_FATCA__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Nacionalidades__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Nacionalidades__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Bancolombia_2014__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Bancolombia_2014__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_PEP__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_PEP__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificacion_FATCA_PJ__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Clasificacion_FATCA_PJ__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmento_del_cliente__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmento_del_cliente__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Nacionalidad__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Nacionalidad__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GIIN__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GIIN__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Precumplimiento_MILA__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Precumplimiento_MILA__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Precumplimiento_Titulos_MILA__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Precumplimiento_Titulos_MILA__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Mes_Vinculacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Mes_Vinculacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_identificacion_pdf__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_identificacion_pdf__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TIN_Tax_Identification_Number__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TIN_Tax_Identification_Number__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cl_usula_de_LPDP__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cl_usula_de_LPDP__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "OPA_EDATEL_2015__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "OPA_EDATEL_2015__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_Agrupacion__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_Agrupacion__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_Envio__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_Envio__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Suspendido_por_LPDP__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Suspendido_por_LPDP__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Potencial_Banca_privada__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Potencial_Banca_privada__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmento_del_cliente_Nivel_II__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmento_del_cliente_Nivel_II__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Revisado_Estrategia_Comercial__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Revisado_Estrategia_Comercial__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Revisado_Proyecto_Retail__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Revisado_Proyecto_Retail__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Revisado_Cumplimiento__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Revisado_Cumplimiento__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Revisado_Campa_a_Actualizacion__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Revisado_Campa_a_Actualizacion__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "No_Autoriza__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "No_Autoriza__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Autorizado_divisas__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Autorizado_divisas__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Plataforma__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Plataforma__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sector_H_AMV__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Sector_H_AMV__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Revisado_Proyecto_Retail_Corporativo_BP__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Revisado_Proyecto_Retail_Corporativo_BP__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Sociedades_de_Familia__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Sociedades_de_Familia__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "PEP_Juridico__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "PEP_Juridico__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_Nombramiento__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_Nombramiento__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_de_Remoci_n__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_de_Remoci_n__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "cargo_ocupa_cupo__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "cargo_ocupa_cupo__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rotaci_n_Asignaci_n_Canal_Corporativo__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Rotaci_n_Asignaci_n_Canal_Corporativo__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Clasificaci_n_para_Negociaci_n_de_Divisa__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Clasificaci_n_para_Negociaci_n_de_Divisa__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Proyecto_Revision_Calidad_de_Datos__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Proyecto_Revision_Calidad_de_Datos__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Contribuyente_de_Renta__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Contribuyente_de_Renta__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "EsResidente__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "EsResidente__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "tipoAutorretenedor__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoAutorretenedor__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_Restricci_n_de_Operaci_n__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_Restricci_n_de_Operaci_n__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Monto_de_la_Restriccion__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Monto_de_la_Restriccion__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Detalle_del_L_mite__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Detalle_del_L_mite__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Suspension__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Suspension__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente_con_Orden_de_Embargo__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cliente_con_Orden_de_Embargo__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente_Fallecido__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cliente_Fallecido__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Constructores__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Constructores__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Custodio__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Custodio__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_Usuario__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_Usuario__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_contraparte__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Es_contraparte__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Actualizado_Bases_Externa__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Actualizado_Bases_Externa__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_Cavipetrol__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_Cavipetrol__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Carta__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Carta__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Es_Miembro_de_Junta__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Es_Miembro_de_Junta__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Nacionalidad_2__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Nacionalidad_2__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Correo_Electr_nico_Facturaci_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Correo_Electr_nico_Facturaci_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_envi_de_Facturaci_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_envi_de_Facturaci_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Segmento_del_cliente_Nivel_III__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Segmento_del_cliente_Nivel_III__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Potencial__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Potencial__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_Contrato_OCM__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_Contrato_OCM__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_Contrato_REPO__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_Contrato_REPO__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_Contrato_DERIVADOS__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_Contrato_DERIVADOS__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Inicio_Contrato_OCM__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Inicio_Contrato_OCM__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Fin_Contrato_OCM__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Fin_Contrato_OCM__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Inicio_Contrato_REPO__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Inicio_Contrato_REPO__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Fin_Contrato_REPO__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Fin_Contrato_REPO__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Inicio_Contrato_DERIVADOS__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Inicio_Contrato_DERIVADOS__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha_Fin_Contrato_DERIVADOS__c",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Fecha_Fin_Contrato_DERIVADOS__c",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Programa_reincorporaci_n_JEP__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Programa_reincorporaci_n_JEP__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "No_asignar_sin_Autorizaci_n_Cumplimiento__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "No_asignar_sin_Autorizaci_n_Cumplimiento__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "No_enviar_informaci_n_de_Mercadeo__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "No_enviar_informaci_n_de_Mercadeo__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Acompa_amiento_Wealth_Planner__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Acompa_amiento_Wealth_Planner__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "No_rotar__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "No_rotar__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_G_E__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_G_E__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "ONG_S__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "ONG_S__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Categorizaci_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Categorizaci_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Adjunta_Acta_de_Aprobaci_n__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Adjunta_Acta_de_Aprobaci_n__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Prospecto_Regional__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Prospecto_Regional__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Detalle_tributario_del_adquiriente__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Detalle_tributario_del_adquiriente__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "R_gimen_del_adquiriente__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "R_gimen_del_adquiriente__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_obligaciones_PN__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_obligaciones_PN__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_obligaciones__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_obligaciones__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipos_de_establecimiento__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipos_de_establecimiento__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipos_de_representaci_PJ__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipos_de_representaci_PJ__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipos_de_representaci_n__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipos_de_representaci_n__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipos_de_usuario__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipos_de_usuario__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_cliente__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_cliente__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tyba__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tyba__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Migrado_USF__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Migrado_USF__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente_Top__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cliente_Top__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_inversionista_SFC__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_inversionista_SFC__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cartera_Sombra__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cartera_Sombra__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "C_digo_de_exoneraci_n_FATCA__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "C_digo_de_exoneraci_n_FATCA__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Emisor_Posici_n_Propia_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Emisor_Posici_n_Propia_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Emisor_no_Tradicional_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Emisor_no_Tradicional_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Operar_por_MILA_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Operar_por_MILA_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_RF_Internacional_Acumulado_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_RF_Internacional_Acumulado_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_RF_Internacional_Diario_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_RF_Internacional_Diario_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Repo_Pasivo_PESOS__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Repo_Pasivo_PESOS__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cupo_Simult_neas_PESOS__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cupo_Simult_neas_PESOS__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Facilidad_de_Garant_as_Derivados__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Facilidad_de_Garant_as_Derivados__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Institucional_SetFX_USD__c",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Institucional_SetFX_USD__c",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente_Inembargable__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Cliente_Inembargable__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Identificaci_n_extranjeros__c",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Identificaci_n_extranjeros__c",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Fideicomitente__c",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Fideicomitente__c",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Identificador_del_Contacto__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Identificador_del_Contacto__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Languages__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Languages__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Client_Preferences__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Client_Preferences__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Suffix__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Suffix__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Birthday_This_Year__pc",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "Birthday_This_Year__pc",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Do_Not_Call__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Do_Not_Call__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "of_Dependents__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "of_Dependents__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Key_Notes__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Key_Notes__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Preferred_Contact_Method__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Preferred_Contact_Method__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Business_Email__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Business_Email__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Investment_Interests__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Investment_Interests__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Name_Pronunciation__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Name_Pronunciation__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Marital_Status__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Marital_Status__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Professional_Interests__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Professional_Interests__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Assistant_Phone__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Assistant_Phone__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Hobbies__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Hobbies__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Preferred_Contact_Time__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Preferred_Contact_Time__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Health_Medical_Concerns__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Health_Medical_Concerns__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Middle_Name__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Middle_Name__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Social_Security_Tax_ID__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Social_Security_Tax_ID__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Head_of_Household__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Head_of_Household__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Annual_Income__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Annual_Income__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Assistant_Name__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Assistant_Name__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Personal_Interests__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Personal_Interests__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Genero__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Genero__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "U_S_Citizenship__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "U_S_Citizenship__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "N_mero_de_identificaci_n__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "N_mero_de_identificaci_n__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Direcci_n_casa__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Direcci_n_casa__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Direcci_n_oficina__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Direcci_n_oficina__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_casa__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_casa__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_oficina__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_oficina__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Representante_legal__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Representante_legal__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Miembro_de_la_junta_directiva__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Miembro_de_la_junta_directiva__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_identificaci_n__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_identificaci_n__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Profesi_n__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Profesi_n__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Antiguedad_en_meses__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Antiguedad_en_meses__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Cargo__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Cargo__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ciudad_de_nacimiento__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ciudad_de_nacimiento__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Departamento_estado_de_nacimiento__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Departamento_estado_de_nacimiento__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Estado_civil__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Estado_civil__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "G_nero__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "G_nero__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Ocupaci_n__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Ocupaci_n__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Pa_s_de_nacimiento__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Pa_s_de_nacimiento__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiene_vivienda_propia__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "Tiene_vivienda_propia__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Area__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Area__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Email_2__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Email_2__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Beeper__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Beeper__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Cliente__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Cliente__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Edad__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Edad__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipo_de_Sangre_RH__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tipo_de_Sangre_RH__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tiempo_estimado_de_carrera__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tiempo_estimado_de_carrera__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Talla_Camisa__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Talla_Camisa__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Categoria__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Categoria__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "simplesurvey__Survey_Last_Requested_On__pc",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "simplesurvey__Survey_Last_Requested_On__pc",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "TIMBASURVEYS__SurveyReminder__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TIMBASURVEYS__SurveyReminder__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TIMBASURVEYS__Survey__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TIMBASURVEYS__Survey__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TIMBASURVEYS__reminderStringSize__pc",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "TIMBASURVEYS__reminderStringSize__pc",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "et4ae5__HasOptedOutOfMobile__pc",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "et4ae5__HasOptedOutOfMobile__pc",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "et4ae5__Mobile_Country_Code__pc",
+									"type": "String"
+								},
+								"sink": {
+									"name": "et4ae5__Mobile_Country_Code__pc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SalesforceAccount",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "srvsqlazsourcesdev_sqldbdmprofile_COSalesforce_Account",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Pruebas"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-12T20:00:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

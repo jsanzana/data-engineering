@@ -1,0 +1,34 @@
+{
+	"name": "sqlccpbidwhp02qa_Unidad",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02qa_sqlccpbidwhp02qa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoUnidad",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Unidad"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

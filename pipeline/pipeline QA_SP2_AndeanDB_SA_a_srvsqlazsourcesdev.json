@@ -1,0 +1,1453 @@
+{
+	"name": "pipeline QA_SP2_AndeanDB_SA_a_srvsqlazsourcesdev",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy SA_AndeanDB_AjusteRetornoInstrumento",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.AjusteRetornoInstrumento;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FactorAjuste']"
+								},
+								"sink": {
+									"name": "FactorAjuste",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Concepto']"
+								},
+								"sink": {
+									"name": "Concepto",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_AjusteRetornoInstrumento",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_AjusteRetornoInstrumento",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_BenchmarkEstatica",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.BenchmarkEstatica;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoBenchmark']"
+								},
+								"sink": {
+									"name": "CodigoBenchmark",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoTasa']"
+								},
+								"sink": {
+									"name": "CodigoTasa",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['EsMoneda']"
+								},
+								"sink": {
+									"name": "EsMoneda",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Spread']"
+								},
+								"sink": {
+									"name": "Spread",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PesoBenchmark']"
+								},
+								"sink": {
+									"name": "PesoBenchmark",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PesoTactico']"
+								},
+								"sink": {
+									"name": "PesoTactico",
+									"type": "Double"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_BenchmarkEstatica",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_BenchmarkEstatica",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_BenchmarkPeers",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.BenchmarkPeers;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoProducto']"
+								},
+								"sink": {
+									"name": "CodigoProducto",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FechaFin']"
+								},
+								"sink": {
+									"name": "FechaFin",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PesoPeer']"
+								},
+								"sink": {
+									"name": "PesoPeer",
+									"type": "Double"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_BenchmarkPeers",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_BenchmarkPeers",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_Benchmarks",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Benchmarks;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoBenchmark']"
+								},
+								"sink": {
+									"name": "CodigoBenchmark",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreBenchmark']"
+								},
+								"sink": {
+									"name": "NombreBenchmark",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoMoneda']"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_Benchmarks",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_Benchmarks",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_ComisionInstrumento",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ComisionInstrumento;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ComisionEA']"
+								},
+								"sink": {
+									"name": "ComisionEA",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['GastosEA']"
+								},
+								"sink": {
+									"name": "GastosEA",
+									"type": "Double"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_ComisionInstrumento",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_ComisionInstrumento",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_ComisionProducto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ComisionProducto;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoProductoClase']"
+								},
+								"sink": {
+									"name": "CodigoProductoClase",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ComisionEA']"
+								},
+								"sink": {
+									"name": "ComisionEA",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['GastosEA']"
+								},
+								"sink": {
+									"name": "GastosEA",
+									"type": "Double"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_ComisionProducto",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_ComisionProducto",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_DiccionarioEmisores",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.DiccionarioEmisores;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoEmisor']"
+								},
+								"sink": {
+									"name": "CodigoEmisor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreCortoEmisor']"
+								},
+								"sink": {
+									"name": "NombreCortoEmisor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreEmisor']"
+								},
+								"sink": {
+									"name": "NombreEmisor",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_DiccionarioEmisores",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_DiccionarioEmisores",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_Emisores",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Emisores;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoEmisor']"
+								},
+								"sink": {
+									"name": "CodigoEmisor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreCortoEmisor']"
+								},
+								"sink": {
+									"name": "NombreCortoEmisor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreEmisor']"
+								},
+								"sink": {
+									"name": "NombreEmisor",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_Emisores",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_Emisores",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_FuentesMercado",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.FuentesMercado;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreFuente']"
+								},
+								"sink": {
+									"name": "NombreFuente",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_FuentesMercado",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_FuentesMercado",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_Instrumentos",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Instrumentos;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ISIN']"
+								},
+								"sink": {
+									"name": "ISIN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Nemonico']"
+								},
+								"sink": {
+									"name": "Nemonico",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoEmisor']"
+								},
+								"sink": {
+									"name": "CodigoEmisor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoTipoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoTipoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoMoneda']"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoExterno']"
+								},
+								"sink": {
+									"name": "CodigoExterno",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FechaEmision']"
+								},
+								"sink": {
+									"name": "FechaEmision",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FechaVencimiento']"
+								},
+								"sink": {
+									"name": "FechaVencimiento",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Nombre']"
+								},
+								"sink": {
+									"name": "Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreCorto']"
+								},
+								"sink": {
+									"name": "NombreCorto",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_Instrumentos",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_Instrumentos",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_ProductoBenchmark",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.ProductoBenchmark;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoProducto']"
+								},
+								"sink": {
+									"name": "CodigoProducto",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FechaFin']"
+								},
+								"sink": {
+									"name": "FechaFin",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoBenchmark']"
+								},
+								"sink": {
+									"name": "CodigoBenchmark",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoBenchmarkObjetivo']"
+								},
+								"sink": {
+									"name": "CodigoBenchmarkObjetivo",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_ProductoBenchmark",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_ProductoBenchmark",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_RetornosMercado",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.RetornosMercado;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoInstrumento']"
+								},
+								"sink": {
+									"name": "CodigoInstrumento",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RetornoDiaNeto']"
+								},
+								"sink": {
+									"name": "RetornoDiaNeto",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RetornoDiaBruto']"
+								},
+								"sink": {
+									"name": "RetornoDiaBruto",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Precio']"
+								},
+								"sink": {
+									"name": "Precio",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PrecioLimpio']"
+								},
+								"sink": {
+									"name": "PrecioLimpio",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CuponCorrido']"
+								},
+								"sink": {
+									"name": "CuponCorrido",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TasaValoracion']"
+								},
+								"sink": {
+									"name": "TasaValoracion",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_RetornosMercado",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_RetornosMercado",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_Tasas",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.Tasas;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoTasa']"
+								},
+								"sink": {
+									"name": "CodigoTasa",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['NombreTasa']"
+								},
+								"sink": {
+									"name": "NombreTasa",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoFuente']"
+								},
+								"sink": {
+									"name": "CodigoFuente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoExterno']"
+								},
+								"sink": {
+									"name": "CodigoExterno",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CodigoMoneda']"
+								},
+								"sink": {
+									"name": "CodigoMoneda",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_Tasas",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_Tasas",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_TasasDinamica",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.TasasDinamica;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CodigoTasa']"
+								},
+								"sink": {
+									"name": "CodigoTasa",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Fecha']"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Tasa']"
+								},
+								"sink": {
+									"name": "Tasa",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TasaEA']"
+								},
+								"sink": {
+									"name": "TasaEA",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TasaSimpleDiaria']"
+								},
+								"sink": {
+									"name": "TasaSimpleDiaria",
+									"type": "Double"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_TasasDinamica",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_TasasDinamica",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_TasasLibreRiesgo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.TasasLibreRiesgo;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_TasasLibreRiesgo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_TasasLibreRiesgo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy SA_AndeanDB_TipoInstrumento",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table ANDEANDB.TipoInstrumento;",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Json_TipoInstrumento",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sqldbgdadev_ANDEANDB_TipoInstrumento",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Carga db táctica/DEV"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-07-07T00:31:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

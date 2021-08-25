@@ -1,0 +1,12 @@
+{
+	"name": "IR-CO-DEV",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/f1c089b7-5bf0-487c-8daf-e5cd8e61fa27/resourcegroups/rg-datalake-integracion/providers/Microsoft.DataFactory/factories/df-cc-gda-ingesta-dev/integrationruntimes/CO-IR",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "sqldbgdadev_SubTipoProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoSubTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreSubTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "SubTipoProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

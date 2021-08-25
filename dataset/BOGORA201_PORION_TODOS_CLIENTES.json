@@ -1,0 +1,17 @@
+{
+	"name": "BOGORA201_PORION_TODOS_CLIENTES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BOGORA201_PORION",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "TODOS",
+			"table": "CLIENTES"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

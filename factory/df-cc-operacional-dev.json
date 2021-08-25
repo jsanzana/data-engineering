@@ -1,0 +1,9 @@
+{
+	"name": "df-cc-operacional-dev",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "60a8b2bf-c510-42f0-be54-437dc5e6d325",
+		"tenantId": "5d93ebcc-f769-4380-8b7e-289fc972da1b"
+	}
+}

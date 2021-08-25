@@ -1,0 +1,42 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_ProductoClase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoClase",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreClase",
+				"type": "varchar"
+			},
+			{
+				"name": "EsPrincipal",
+				"type": "bit"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProductoClase",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ProductoClase"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

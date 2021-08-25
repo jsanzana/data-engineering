@@ -1,0 +1,77 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_Presupuesto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoPais",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "CodigoTipoPeriodo",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "UnidadNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoLineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "LineaNegocio",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoPresupuesto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFrecuencia",
+				"type": "varchar"
+			},
+			{
+				"name": "Frecuencia",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "varchar"
+			},
+			{
+				"name": "IngresoBruto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "IngresoNeto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PagoPorDistribucion",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Presupuesto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,30 @@
+{
+	"name": "sqlccpbidwhp02dev_SistemaProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02dev_sqlccpbidwhp02dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSistema",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoProductoSistema",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SistemaProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

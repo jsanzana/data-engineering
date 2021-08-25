@@ -1,0 +1,41 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_TasasDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoTasa",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "Tasa",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TasaEA",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TasaSimpleDiaria",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "TasasDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

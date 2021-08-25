@@ -1,0 +1,30 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_SubClaseActivo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoSubClaseActivo",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoClaseActivo",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SubClaseActivo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

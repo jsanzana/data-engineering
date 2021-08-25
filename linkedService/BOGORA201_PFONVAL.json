@@ -1,0 +1,16 @@
+{
+	"name": "BOGORA201_PFONVAL",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Oracle",
+		"typeProperties": {
+			"connectionString": "host=BOGORA201;port=4280;sid=PFONVAL;user id=USRDATACOORACLEQA",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmYTJjZmZmYi00YjNlLTRlNmMtOWI4ZS0wM2M5OWNkMDQ3MzkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-CO-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

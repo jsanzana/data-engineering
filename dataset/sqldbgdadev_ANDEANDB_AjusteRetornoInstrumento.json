@@ -1,0 +1,35 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_AjusteRetornoInstrumento",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "FactorAjuste",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Concepto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "AjusteRetornoInstrumento"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

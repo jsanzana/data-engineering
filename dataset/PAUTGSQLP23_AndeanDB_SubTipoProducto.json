@@ -1,0 +1,30 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_SubTipoProducto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoSubTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreSubTipoProducto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SubTipoProducto"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

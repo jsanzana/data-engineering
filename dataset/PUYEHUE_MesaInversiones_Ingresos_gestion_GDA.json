@@ -1,0 +1,62 @@
+{
+	"name": "PUYEHUE_MesaInversiones_Ingresos_gestion_GDA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PUYEHUE_MesaInversiones",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "Unidad_Gestion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Unidad",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Producto_Asociado",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Glosa",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tipo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "GDA",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "GDP",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "MDK",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Ingresos_Gestion_GDA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

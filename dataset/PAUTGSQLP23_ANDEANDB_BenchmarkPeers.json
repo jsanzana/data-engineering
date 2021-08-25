@@ -1,0 +1,39 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_BenchmarkPeers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "FechaFin",
+				"type": "date"
+			},
+			{
+				"name": "PesoPeer",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "BenchmarkPeers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

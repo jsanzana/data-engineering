@@ -1,0 +1,17 @@
+{
+	"name": "sqldbgdadev_ANDEANDB_ProductoInstrumentoDinamica",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesdev_sqldbgdadev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "ProductoInstrumentoDinamica"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,36 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_ComisionInstrumento",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "ComisionEA",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "GastosEA",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ComisionInstrumento"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

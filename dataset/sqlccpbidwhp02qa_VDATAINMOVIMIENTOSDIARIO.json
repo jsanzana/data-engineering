@@ -1,0 +1,64 @@
+{
+	"name": "sqlccpbidwhp02qa_VDATAINMOVIMIENTOSDIARIO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlccpbidwhp02qa_sqlccpbidwhp02qa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "FECHA",
+				"type": "date"
+			},
+			{
+				"name": "COD_IN",
+				"type": "decimal",
+				"precision": 4,
+				"scale": 0
+			},
+			{
+				"name": "SUSCRIPCIONES",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			},
+			{
+				"name": "RESCATES",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			},
+			{
+				"name": "TRASPASOS",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			},
+			{
+				"name": "SUSCRIPCIONES_CUOTAS",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			},
+			{
+				"name": "RESCATES_CUOTAS",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			},
+			{
+				"name": "TRASPASOS_CUOTAS",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "V_DATA_IN_MOVIMIENTOS_DIARIO_TMP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

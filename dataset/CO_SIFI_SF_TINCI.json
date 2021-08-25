@@ -1,0 +1,17 @@
+{
+	"name": "CO_SIFI_SF_TINCI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BOGORA201_PSIFI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "VU_SFI",
+			"table": "SF_TINCI"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

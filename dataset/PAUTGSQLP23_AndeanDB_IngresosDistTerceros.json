@@ -1,0 +1,68 @@
+{
+	"name": "PAUTGSQLP23_AndeanDB_IngresosDistTerceros",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "Manager",
+				"type": "varchar"
+			},
+			{
+				"name": "ISIN",
+				"type": "char"
+			},
+			{
+				"name": "Fondo",
+				"type": "varchar"
+			},
+			{
+				"name": "Serie",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			},
+			{
+				"name": "CodigoPais",
+				"type": "char"
+			},
+			{
+				"name": "Cliente",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "AUM",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Rebate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "IngresosDistTerceros"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

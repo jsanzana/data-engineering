@@ -1,0 +1,60 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_RetornosMercado",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "RetornoDiaNeto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "RetornoDiaBruto",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Precio",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "PrecioLimpio",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CuponCorrido",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TasaValoracion",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "RetornosMercado"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "BOGORA201_PORION4_BUCCLCLIENTE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BOGORA201_PORION4",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "TODOS",
+			"table": "TMP_CUENTAS_CLIENTE"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

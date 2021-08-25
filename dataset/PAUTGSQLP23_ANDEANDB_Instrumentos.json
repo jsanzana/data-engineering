@@ -1,0 +1,82 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_Instrumentos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "ISIN",
+				"type": "char"
+			},
+			{
+				"name": "Nemonico",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoEmisor",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoInstrumento",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoMoneda",
+				"type": "char"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoExterno",
+				"type": "varchar"
+			},
+			{
+				"name": "FechaEmision",
+				"type": "date"
+			},
+			{
+				"name": "FechaVencimiento",
+				"type": "date"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCorto",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoPais",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoSubClaseActivo",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoIndustria",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoTipoTasa",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Instrumentos"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "PKSEGCSOD01_BD_TESORERIA",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=PKSEGCSOD01;initial catalog=BD_TESORERIA",
+			"userName": "BCPDOM\\usrDataPEDesa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlMmYxZjdlMy0wNDQyLTQyNDktODMyMy04ODkyN2Q4ODJmZjQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-PE-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

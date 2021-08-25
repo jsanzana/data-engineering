@@ -1,0 +1,30 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_DiccionarioIndustria",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoIndustria",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "Nombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DiccionarioIndustria"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

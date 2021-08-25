@@ -1,0 +1,38 @@
+{
+	"name": "PAUTGSQLP23_ANDEANDB_ProductoBenchmark",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PAUTGSQLP23_ANDEANDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CodigoProducto",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			},
+			{
+				"name": "FechaFin",
+				"type": "date"
+			},
+			{
+				"name": "CodigoBenchmark",
+				"type": "varchar"
+			},
+			{
+				"name": "CodigoBenchmarkObjetivo",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ProductoBenchmark"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

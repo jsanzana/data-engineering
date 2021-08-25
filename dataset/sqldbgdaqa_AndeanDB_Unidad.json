@@ -1,0 +1,34 @@
+{
+	"name": "sqldbgdaqa_AndeanDB_Unidad",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "srvsqlazsourcesqa_sqldbgdaqa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CodigoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCortoUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreUnidad",
+				"type": "varchar"
+			},
+			{
+				"name": "TipoUnidad",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "ANDEANDB",
+			"table": "Unidad"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,16 @@
+{
+	"name": "BOGORA201_PFIDUFON",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Oracle",
+		"typeProperties": {
+			"connectionString": "host=BOGORA201;port=4280;sid=PFIDUFON;user id=USRDATACOORACLEQA",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkZTdjZWVjYy0zMjYwLTQ4NGMtYjgwNy1lMTNmOWQzMmE4NjUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-CO-DEV",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
